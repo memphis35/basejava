@@ -4,14 +4,16 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
-
+    int size = 0;
+    
     /**
      * Clear the array storage.
      */
     void clear() {
-        for (int i = 0; i != this.storage.length; i++) {
-            if (this.storage[i] != null) {
-                this.storage[i] = null;
+        for (int i = 0; i != storage.length; i++) {
+            if (storage[i] != null) {
+                storage[i] = null;
+                size = 0;
             }
             else {
                 break;
@@ -25,9 +27,10 @@ public class ArrayStorage {
      * @param r current Resume
      */
     void save(Resume r) {
-        for (int i = 0; i != this.storage.length; i++) {
-            if (this.storage[i] == null) {
-                this.storage[i] = r;
+        for (int i = 0; i != storage.length; i++) {
+            if (storage[i] == null) {
+                storage[i] = r;
+                size++;
                 break;
             }
         }
@@ -40,9 +43,9 @@ public class ArrayStorage {
      */
     String get(String uuid) {
         String answer = "Not found";
-        for (int i = 0; this.storage[i] != null; i++) {
-            if (this.storage[i].uuid.equals(uuid)) {
-                answer = this.storage[i].toString();
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(uuid)) {
+                answer = storage[i].toString();
                 break;
             }
         }
@@ -55,10 +58,11 @@ public class ArrayStorage {
      */
     void delete(String uuid) {
         int count = 0;
-        for (int i = 0; this.storage[i] != null; i++) {
+        for (int i = 0; i != size; i++) {
             if (this.storage[i].uuid.equals(uuid)) {
                 count++;
                 System.arraycopy(this.storage, i + 1, this.storage, i, this.storage.length - 1 - i);
+                size--;
             }
         }
         if (count == 0) {
@@ -71,14 +75,6 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        int i;
-        for (i = 0; i != this.storage.length;) {
-            if (this.storage[i] != null) {
-                i++;
-            } else {
-                break;
-            }
-        }
         Resume[] a1 = Arrays.copyOf(this.storage, i);
         return a1;
     }
@@ -88,14 +84,6 @@ public class ArrayStorage {
      * @return size of array (quantity of objects)
      */
     int size() {
-        int size = 0;
-        for (int i = 0; i != this.storage.length; i++) {
-            if (this.storage[i] != null) {
-                size++;
-            } else {
-                break;
-            }
-        }
-        return size;
+        return this.size;
     }
 }
