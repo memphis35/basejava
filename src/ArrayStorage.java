@@ -31,13 +31,18 @@ public class ArrayStorage {
      * @param uuid incoming UUID number
      * @return UUID number of existing Resume
      */
-    String get(String uuid) {
-        String answer = "Not found";
+    Resume get(String uuid) {
+        int count = 0;
+        Resume answer = new Resume();
         for (int i = 0; i < size; i++) {
             if (storage[i].uuid.equals(uuid)) {
-                answer = storage[i].toString();
+                answer = storage[i];
+                count++;
                 break;
             }
+        }
+        if (count == 0) {
+            answer.uuid = "Not found.";
         }
         return answer;
     }
