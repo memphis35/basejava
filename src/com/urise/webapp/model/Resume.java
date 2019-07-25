@@ -1,3 +1,5 @@
+package com.urise.webapp.model;
+
 /**
  * Initial resume class
  */
@@ -13,6 +15,7 @@ public class Resume {
     public String getUuid() {
         return this.uuid;
     }
+
     @Override
     public String toString() {
         return uuid;
