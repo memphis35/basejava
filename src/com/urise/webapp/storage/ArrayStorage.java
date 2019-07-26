@@ -31,7 +31,7 @@ public class ArrayStorage {
             System.out.println("Storage overloaded.");
         } else if (exist(resume.getUuid()) == -1) {
             storage[currentCize] = resume;
-            System.out.println("Resume succesfully saved.");
+            System.out.println("Resume successfully saved.");
             currentCize++;
         } else {
             System.out.println("Resume already exist");
