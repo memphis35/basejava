@@ -63,6 +63,8 @@ public class ArrayStorage {
         int i = getIndex(uuid);
         if (i != -1) {
             return storage[i];
+        } else {
+            System.out.println("Resume #" + uuid + " not found.");
         }
         return null;
     }
