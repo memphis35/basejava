@@ -8,16 +8,16 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private final static int MAXSIZE = 10_000;
-    private Resume[] storage = new Resume[MAXSIZE];
-    private int size = 0;
+    private final static int MAX_SIZE = 10_000;
+    private Resume[] storage = new Resume[MAX_SIZE];
+    private int currentCize = 0;
 
     /**
      * Clear the array storage
      */
     public void clear() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
+        Arrays.fill(storage, 0, currentCize, null);
+        currentCize = 0;
         System.out.println("Storage successfully cleared.");
     }
 
@@ -27,12 +27,12 @@ public class ArrayStorage {
      * @param resume current resume
      */
     public void save(Resume resume) {
-        if (size >= MAXSIZE) {
+        if (currentCize >= MAX_SIZE) {
             System.out.println("Storage overloaded.");
-        } else if (!exist(resume.getUuid())) {
-            storage[size] = resume;
+        } else if (exist(resume.getUuid()) == -1) {
+            storage[currentCize] = resume;
             System.out.println("Resume succesfully saved.");
-            size++;
+            currentCize++;
         } else {
             System.out.println("Resume already exist");
         }
@@ -44,12 +44,10 @@ public class ArrayStorage {
      * @param resume incoming resume
      */
     public void update(Resume resume) {
-        if (exist(resume.getUuid())) {
-            for (int i = 0; i < size; i++) {
-                storage[i] = resume;
-                System.out.println("Resume #" + resume.getUuid() + " successfully updated.");
-                break;
-            }
+        int i = exist(resume.getUuid());
+        if (i != -1) {
+            storage[i] = resume;
+            System.out.println("Resume #" + resume.getUuid() + " successfully updated.");
         } else {
             System.out.println("Resume #" + resume.getUuid() + " not found.");
         }
@@ -63,13 +61,11 @@ public class ArrayStorage {
      */
     public Resume get(String uuid) {
         Resume answer = new Resume();
-        for (int i = 0; i < size; i++) {
-            if (exist(uuid)) {
-                answer = storage[i];
-                break;
-            } else {
-                answer.setUuid("Resume #" + uuid + " not found.");
-            }
+        int i = exist(uuid);
+        if (i != -1) {
+            answer = storage[i];
+        } else {
+            answer.setUuid("Resume #" + uuid + " not found.");
         }
         return answer;
     }
@@ -80,13 +76,11 @@ public class ArrayStorage {
      * @param uuid incoming UUID number
      */
     public void delete(String uuid) {
-        if (exist(uuid)) {
-            for (int i = 0; i < size; i++) {
-                System.arraycopy(storage, i + 1, storage, i, size - 1 - i);
-                size--;
-                System.out.println("Resume #" + uuid + " succesfully deleted.");
-                break;
-            }
+        int i = exist(uuid);
+        if (i != -1) {
+            System.arraycopy(storage, i + 1, storage, i, currentCize - 1 - i);
+            currentCize--;
+            System.out.println("Resume #" + uuid + " successfully deleted.");
         } else {
             System.out.println("Resume #" + uuid + " not found.");
         }
@@ -98,7 +92,7 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
+        return Arrays.copyOf(storage, currentCize);
     }
 
     /**
@@ -107,7 +101,7 @@ public class ArrayStorage {
      * @return size of array (quantity of objects)
      */
     public int size() {
-        return size;
+        return currentCize;
     }
 
     /**
@@ -116,13 +110,13 @@ public class ArrayStorage {
      * @param uuid UUID number
      * @return true if resume exist
      */
-    public boolean exist(String uuid) {
-        boolean isExist = false;
-        for (int i = 0; i < size; i++) {
+    private int exist(String uuid) {
+        int index = -1;
+        for (int i = 0; i < currentCize; i++) {
             if (storage[i].getUuid().equals(uuid)) {
-                isExist = true;
+                index = i;
             }
         }
-        return isExist;
+        return index;
     }
 }
