@@ -1,19 +1,23 @@
-import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.ArrayStorage;
+package ru.javawebinar.basejava;
+
+import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.Storage;
+import ru.javawebinar.basejava.storage.SortedArrayStorage;
+
 
 /**
- * Test for your com.urise.webapp.storage.ArrayStorage implementation
+ * Test for your ru.javawebinar.basejava.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    private static final Storage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume();
-        r1.setUuid("uuid1");
+        r1.setUuid("uuid5");
         Resume r2 = new Resume();
-        r2.setUuid("uuid2");
+        r2.setUuid("uuid3");
         Resume r3 = new Resume();
-        r3.setUuid("uuid3");
+        r3.setUuid("uuid2");
         Resume r4 = new Resume();
         r4.setUuid("wrong_uuid1");
         Resume r5 = new Resume();
@@ -23,6 +27,7 @@ public class MainTestArrayStorage {
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
         ARRAY_STORAGE.save(r3);
+        printAll();
         ARRAY_STORAGE.save(r5);
 
         System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.getUuid()));
@@ -30,7 +35,7 @@ public class MainTestArrayStorage {
 
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
         ARRAY_STORAGE.update(r4); //wrong update
-        r4.setUuid("uuid1");
+        r4.setUuid("uuid2");
         ARRAY_STORAGE.update(r4); //right update
 
         printAll();
@@ -42,7 +47,7 @@ public class MainTestArrayStorage {
         System.out.println("Size: " + ARRAY_STORAGE.size());
     }
 
-    static void printAll() {
+    private static void printAll() {
         System.out.println("\nGet All");
         for (Resume r : ARRAY_STORAGE.getAll()) {
             System.out.println(r);
