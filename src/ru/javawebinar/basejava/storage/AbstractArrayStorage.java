@@ -48,7 +48,7 @@ public abstract class AbstractArrayStorage implements Storage {
      */
     public Resume get(String uuid) {
         int i = getIndex(uuid);
-        if (i > 0) {
+        if (i >= 0) {
             return storage[i];
         } else {
             System.out.println("Resume #" + uuid + " not found.");
@@ -61,16 +61,7 @@ public abstract class AbstractArrayStorage implements Storage {
      *
      * @param uuid incoming UUID number
      */
-    public void delete(String uuid) {
-        int i = getIndex(uuid);
-        if (i != -1) {
-            System.arraycopy(storage, i + 1, storage, i, currentSize - 1 - i);
-            currentSize--;
-            System.out.println("Resume #" + uuid + " successfully deleted.");
-        } else {
-            System.out.println("Resume #" + uuid + " not found.");
-        }
-    }
+    public abstract void delete(String uuid);
 
     /**
      * Get all Resume's UUIN numbers, printed to stack

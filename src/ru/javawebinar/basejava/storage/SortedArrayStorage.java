@@ -28,6 +28,22 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     /**
+     * Delete existing Resume from array storage by UUID number
+     *
+     * @param uuid incoming UUID number
+     */
+    public void delete(String uuid) {
+        int i = getIndex(uuid);
+        if (i != -1) {
+            System.arraycopy(storage, i + 1, storage, i, currentSize - 1 - i);
+            currentSize--;
+            System.out.println("Resume #" + uuid + " successfully deleted.");
+        } else {
+            System.out.println("Resume #" + uuid + " not found.");
+        }
+    }
+
+    /**
      * Searching for a existing resume by UUID number
      *
      * @param uuid UUID number

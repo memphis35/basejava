@@ -18,6 +18,4 @@ public interface Storage {
 
     int size();
 
-    int getIndex(String uuid);
-
 }

@@ -25,6 +25,18 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
     }
 
+    public void delete(String uuid) {
+        int i = getIndex(uuid);
+        if (i != -1) {
+            storage[i] = storage[currentSize - 1];
+            storage[currentSize - 1] = null;
+            currentSize--;
+            System.out.println("Resume #" + uuid + " successfully deleted.");
+        } else {
+            System.out.println("Resume #" + uuid + " not found.");
+        }
+    }
+
     /**
      * Searching for a existing resume by UUID number
      *
