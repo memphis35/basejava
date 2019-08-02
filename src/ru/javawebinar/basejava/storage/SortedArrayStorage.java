@@ -12,35 +12,23 @@ public class SortedArrayStorage extends AbstractArrayStorage {
      * @param resume current resume
      */
     @Override
-    public void save(Resume resume) {
+    public void saveToArray(Resume resume) {
         int i = -getIndex(resume.getUuid());
-        if (currentSize >= MAX_SIZE) {
-            System.out.println("Storage overloaded.");
-        }
-        if (i > 0) {
-            System.arraycopy(storage, i - 1, storage, i, currentSize - i + 1);
-            storage[i - 1] = resume;
-            System.out.println("Saved.");
-            currentSize++;
-        } else {
-            System.out.println("Resume already exist");
-        }
+        System.arraycopy(storage, i - 1, storage, i, currentSize - i + 1);
+        storage[i - 1] = resume;
+        System.out.println("Saved.");
+        currentSize++;
     }
 
     /**
      * Delete existing Resume from array storage by UUID number
      *
-     * @param uuid incoming UUID number
+     * @param i index of resume
      */
-    public void delete(String uuid) {
-        int i = getIndex(uuid);
-        if (i != -1) {
-            System.arraycopy(storage, i + 1, storage, i, currentSize - 1 - i);
-            currentSize--;
-            System.out.println("Resume #" + uuid + " successfully deleted.");
-        } else {
-            System.out.println("Resume #" + uuid + " not found.");
-        }
+    public void deleteFromArray(int i) {
+        System.arraycopy(storage, i + 1, storage, i, currentSize - 1 - i);
+        currentSize--;
+        System.out.println("Resume #" + storage[i].getUuid() + " successfully deleted.");
     }
 
     /**
