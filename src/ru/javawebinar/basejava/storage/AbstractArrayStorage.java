@@ -59,9 +59,8 @@ public abstract class AbstractArrayStorage implements Storage {
         int i = getIndex(uuid);
         if (i >= 0) {
             return storage[i];
-        } else {
-            System.out.println("Resume #" + uuid + " not found.");
         }
+        System.out.println("Resume #" + uuid + " not found.");
         return null;
     }
 
