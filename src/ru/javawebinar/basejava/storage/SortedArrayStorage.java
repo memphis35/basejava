@@ -12,23 +12,18 @@ public class SortedArrayStorage extends AbstractArrayStorage {
      * @param resume current resume
      */
     @Override
-    public void saveToArray(Resume resume) {
-        int i = -getIndex(resume.getUuid());
-        System.arraycopy(storage, i - 1, storage, i, currentSize - i + 1);
-        storage[i - 1] = resume;
-        System.out.println("Saved.");
-        currentSize++;
+    public void saveToArray(int index, Resume resume) {
+        System.arraycopy(storage, -index - 1, storage, -index, currentSize + index + 1);
+        storage[-index - 1] = resume;
     }
 
     /**
      * Delete existing Resume from array storage by UUID number
      *
-     * @param i index of resume
+     * @param index index of resume
      */
-    public void deleteFromArray(int i) {
-        System.arraycopy(storage, i + 1, storage, i, currentSize - 1 - i);
-        currentSize--;
-        System.out.println("Resume #" + storage[i].getUuid() + " successfully deleted.");
+    public void deleteFromArray(int index) {
+        System.arraycopy(storage, index + 1, storage, index, currentSize - 1 - index);
     }
 
     /**

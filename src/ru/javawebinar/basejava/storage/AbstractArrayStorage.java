@@ -24,11 +24,13 @@ public abstract class AbstractArrayStorage implements Storage {
      * @param resume current resume
      */
     public void save(Resume resume) {
-        int i = getIndex(resume.getUuid());
+        int index = getIndex(resume.getUuid());
         if (currentSize >= MAX_SIZE) {
             System.out.println("Storage overloaded.");
-        } else if (i < 0) {
-            saveToArray(resume);
+        } else if (index < 0) {
+            saveToArray(index, resume);
+            System.out.println("Resume successfully saved.");
+            currentSize++;
         } else {
             System.out.println("Resume already exist");
         }
@@ -70,9 +72,11 @@ public abstract class AbstractArrayStorage implements Storage {
      * @param uuid incoming UUID number
      */
     public void delete(String uuid) {
-        int i = getIndex(uuid);
-        if (i != -1) {
-            deleteFromArray(i);
+        int index = getIndex(uuid);
+        if (index >= 0) {
+            deleteFromArray(index);
+            currentSize--;
+            System.out.println("Resume successfully deleted.");
         } else {
             System.out.println("Resume #" + uuid + " not found.");
         }
@@ -96,9 +100,9 @@ public abstract class AbstractArrayStorage implements Storage {
         return currentSize;
     }
 
-    public abstract void saveToArray(Resume resume);
+    public abstract void saveToArray(int index, Resume resume);
 
-    public abstract void deleteFromArray(int i);
+    public abstract void deleteFromArray(int index);
 
     /**
      * Searching for a existing resume by UUID number

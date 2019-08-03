@@ -13,17 +13,14 @@ public class ArrayStorage extends AbstractArrayStorage {
      * @param resume current resume
      */
     @Override
-    public void saveToArray(Resume resume) {
+    public void saveToArray(int index, Resume resume) {
         storage[currentSize] = resume;
-        System.out.println("Resume successfully saved.");
-        currentSize++;
     }
 
     @Override
-    public void deleteFromArray(int i) {
-        storage[i] = storage[currentSize - 1];
+    public void deleteFromArray(int index) {
+        storage[index] = storage[currentSize - 1];
         storage[currentSize - 1] = null;
-        currentSize--;
     }
 
     /**
