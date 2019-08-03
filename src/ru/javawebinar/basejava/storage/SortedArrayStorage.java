@@ -24,7 +24,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
      * @param index index of resume
      */
     public void deleteFromArray(int index) {
-        System.arraycopy(storage, index + 1, storage, index, currentSize - index);
+        System.arraycopy(storage, index + 1, storage, index, currentSize - index - 1);
     }
 
     /**
