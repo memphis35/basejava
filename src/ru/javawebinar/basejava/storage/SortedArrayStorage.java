@@ -13,8 +13,9 @@ public class SortedArrayStorage extends AbstractArrayStorage {
      */
     @Override
     public void saveToArray(int index, Resume resume) {
-        System.arraycopy(storage, -index - 1, storage, -index, currentSize + index + 1);
-        storage[-index - 1] = resume;
+        int i = -index - 1;
+        System.arraycopy(storage, i, storage, i + 1, currentSize - i);
+        storage[i] = resume;
     }
 
     /**
@@ -23,7 +24,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
      * @param index index of resume
      */
     public void deleteFromArray(int index) {
-        System.arraycopy(storage, index + 1, storage, index, currentSize - 1 - index);
+        System.arraycopy(storage, index + 1, storage, index, currentSize - index);
     }
 
     /**
