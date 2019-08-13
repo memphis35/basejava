@@ -1,5 +1,8 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.exception.ExistException;
+import ru.javawebinar.basejava.exception.NotExistException;
+import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
@@ -26,13 +29,13 @@ public abstract class AbstractArrayStorage implements Storage {
     public void save(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (currentSize >= MAX_SIZE) {
-            System.out.println("Storage overloaded.");
+            throw new StorageException("Storage overloaded.", resume.getUuid());
         } else if (index < 0) {
             saveToArray(index, resume);
             System.out.println("Resume successfully saved.");
             currentSize++;
         } else {
-            System.out.println("Resume already exist");
+            throw new ExistException(resume.getUuid());
         }
     }
 
@@ -47,7 +50,7 @@ public abstract class AbstractArrayStorage implements Storage {
             storage[i] = resume;
             System.out.println("Resume #" + resume.getUuid() + " successfully updated.");
         } else {
-            System.out.println("Resume #" + resume.getUuid() + " not found.");
+            throw new NotExistException(resume.getUuid());
         }
     }
 
@@ -62,8 +65,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (i >= 0) {
             return storage[i];
         }
-        System.out.println("Resume #" + uuid + " not found.");
-        return null;
+        throw new NotExistException(uuid);
     }
 
     /**
@@ -71,15 +73,15 @@ public abstract class AbstractArrayStorage implements Storage {
      *
      * @param uuid incoming UUID number
      */
-    public void delete(String uuid) {
+    public void delete(String uuid) throws StorageException {
         int index = getIndex(uuid);
         if (index >= 0) {
             deleteFromArray(index);
-            storage[currentSize-1] = null;
+            storage[currentSize - 1] = null;
             currentSize--;
             System.out.println("Resume successfully deleted.");
         } else {
-            System.out.println("Resume #" + uuid + " not found.");
+            throw new NotExistException(uuid);
         }
     }
 
