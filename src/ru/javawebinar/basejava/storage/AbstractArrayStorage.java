@@ -45,9 +45,9 @@ public abstract class AbstractArrayStorage implements Storage {
      * @param resume incoming resume
      */
     public void update(Resume resume) {
-        int i = getIndex(resume.getUuid());
-        if (i >= 0) {
-            storage[i] = resume;
+        int index = getIndex(resume.getUuid());
+        if (index >= 0) {
+            storage[index] = resume;
             System.out.println("Resume #" + resume.getUuid() + " successfully updated.");
         } else {
             throw new NotExistException(resume.getUuid());
@@ -61,9 +61,9 @@ public abstract class AbstractArrayStorage implements Storage {
      * @return UUID number of existing Resume
      */
     public Resume get(String uuid) {
-        int i = getIndex(uuid);
-        if (i >= 0) {
-            return storage[i];
+        int index = getIndex(uuid);
+        if (index >= 0) {
+            return storage[index];
         }
         throw new NotExistException(uuid);
     }
