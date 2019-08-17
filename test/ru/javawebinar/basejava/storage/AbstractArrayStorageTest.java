@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.storage;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.basejava.exception.ExistException;
@@ -32,13 +33,15 @@ public abstract class AbstractArrayStorageTest {
     public void clear() {
         storage.clear();
         Resume[] result = new Resume[0];
-        assertEquals(storage.getAll(), result);
+        assertArrayEquals(result, storage.getAll());
+        assertEquals(0, storage.size());
     }
 
     @Test
     public void saveSuccess() {
         storage.save(r4);
-        assertEquals(storage.get(r4.getUuid()), r4);
+        assertEquals(r4, storage.get(r4.getUuid()));
+        assertEquals(4, storage.size());
     }
 
     @Test(expected = ExistException.class)
@@ -49,7 +52,7 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void updateSuccess() {
         storage.update(r5);
-        assertEquals(storage.get(r5.getUuid()), r5);
+        assertEquals(r5, storage.get(r5.getUuid()));
     }
 
     @Test(expected = NotExistException.class)
@@ -59,8 +62,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void getSuccess() {
-        storage.save(r4);
-        assertEquals(storage.get(r4.getUuid()), r4);
+        assertEquals(r3, storage.get(r3.getUuid()));
     }
 
     @Test(expected = NotExistException.class)
@@ -71,6 +73,7 @@ public abstract class AbstractArrayStorageTest {
     @Test(expected = NotExistException.class)
     public void deleteSuccess() {
         storage.delete(r2.getUuid());
+        assertEquals(2, storage.size());
         storage.get(r2.getUuid());
     }
 
@@ -83,7 +86,7 @@ public abstract class AbstractArrayStorageTest {
     public void getAll() {
         Resume[] result = new Resume[]{r1, r2, r3};
         Resume[] test1 = storage.getAll();
-        assertEquals(result, test1);
+        assertArrayEquals(result, test1);
     }
 
     @Test
@@ -91,25 +94,18 @@ public abstract class AbstractArrayStorageTest {
         assertEquals(3, storage.size());
     }
 
-    @Test
-    public void saveOverloadedFailed() {
+    @Test (expected = StorageException.class)
+    public void saveOverloaded() {
         storage.clear();
         int uuid = 1;
         for (int i = 0; i < 10_000; i++) {
             Resume r = new Resume(Integer.toString(uuid));
-            storage.save(r);
-            uuid++;
-        }
-    }
-
-    @Test(expected = StorageException.class)
-    public void saveOverloadedSuccess() {
-        storage.clear();
-        int uuid = 1;
-        for (int i = 0; i < 10_000; i++) {
-            Resume r = new Resume(Integer.toString(uuid));
-            storage.save(r);
-            uuid++;
+            try {
+                storage.save(r);
+                uuid++;
+            } catch (StorageException s) {
+                Assert.fail("Overflow");
+            }
         }
         Resume a = new Resume("OVERLOADING RESUME");
         storage.save(a);
