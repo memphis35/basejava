@@ -7,11 +7,10 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
-    protected final static int MAX_SIZE = 10_000;
+public abstract class AbstractArrayStorage extends AbstractStorage {
+    final static int MAX_SIZE = 10_000;
+    int currentSize = 0;
     protected Resume[] storage = new Resume[MAX_SIZE];
-    protected int currentSize = 0;
-
     /**
      * Clear the array storage
      */
