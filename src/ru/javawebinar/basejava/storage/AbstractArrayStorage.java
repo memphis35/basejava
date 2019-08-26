@@ -11,10 +11,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected int currentSize = 0;
     protected Resume[] storage = new Resume[MAX_SIZE];
 
-    /**
-     * Clear the array storage
-     */
-    @Override //from storage interface
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, currentSize, null);
         currentSize = 0;
@@ -48,7 +45,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return currentSize;
     }
 
-    protected abstract void saveToMainArray(int index, Resume resume);
+    public void deleteFromArray(int index) {
+        System.arraycopy(storage, index + 1, storage, index, currentSize - index - 1);
+        storage[currentSize - 1] = null;
+        currentSize--;
+    }
 
-    public abstract void deleteFromArray(int index);
+    protected abstract void saveToMainArray(int index, Resume resume);
 }

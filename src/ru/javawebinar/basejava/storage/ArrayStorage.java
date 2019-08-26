@@ -13,12 +13,6 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    public void deleteFromArray(int index) {
-        storage[index] = storage[currentSize - 1];
-        storage[currentSize - 1] = null;
-        currentSize--;
-    }
-    @Override
     public int getIndex(String uuid) {
         for (int i = 0; i < currentSize; i++) {
             if (storage[i].getUuid().equals(uuid)) {

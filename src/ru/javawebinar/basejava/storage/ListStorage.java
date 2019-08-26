@@ -8,7 +8,7 @@ import java.util.*;
 public class ListStorage extends AbstractStorage {
     private List<Resume> storage = new ArrayList<>();
 
-    @Override //from storage interface
+    @Override
     public void clear() {
         storage.clear();
     }
@@ -37,25 +37,25 @@ public class ListStorage extends AbstractStorage {
         return storage.get(index);
     }
 
-    @Override //from storage interface
+    @Override
     public Resume[] getAll() {
         return storage.toArray(new Resume[0]);
     }
 
-    @Override //from storage interface
+    @Override
     public int size() {
         return storage.size();
     }
 
     @Override
     public int getIndex(String uuid) {
-        Iterator<Resume> iterator = storage.iterator();
+        int i = 0;
         int index = -1;
-        while (iterator.hasNext()) {
-            Resume search = iterator.next();
-            if (search.getUuid().equals(uuid)) {
-                index = storage.indexOf(search);
+        while (i < storage.size()) {
+            if (storage.get(i).getUuid().equals(uuid)) {
+                index = i;
             }
+            i++;
         }
         return index;
     }

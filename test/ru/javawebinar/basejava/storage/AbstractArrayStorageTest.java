@@ -94,7 +94,7 @@ public abstract class AbstractArrayStorageTest {
         assertEquals(3, storage.size());
     }
 
-    @Test (expected = StorageException.class)
+    @Test(expected = StorageException.class)
     public void saveOverloaded() {
         storage.clear();
         int uuid = 1;
