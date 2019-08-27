@@ -14,6 +14,13 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
+    public void deleteFromMainArray(int index) {
+        System.arraycopy(storage, index + 1, storage, index, currentSize - index - 1);
+        storage[currentSize - 1] = null;
+    }
+
+
+    @Override
     public int getIndex(String uuid) {
         return Arrays.binarySearch(storage, 0, currentSize, new Resume(uuid));
     }

@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.exception.ExistException;
 import ru.javawebinar.basejava.exception.NotExistException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
@@ -8,7 +9,11 @@ public abstract class AbstractStorage implements Storage {
 
     public void save(Resume resume) throws StorageException {
         int index = getIndex(resume.getUuid());
-        saveToArray(index, resume);
+        if (index < 0) {
+            saveToArray(index, resume);
+        } else {
+            throw new ExistException(resume.getUuid());
+        }
     }
 
     protected abstract void saveToArray(int index, Resume resume);

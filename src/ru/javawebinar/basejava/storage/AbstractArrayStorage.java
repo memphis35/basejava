@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.ExistException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
@@ -21,12 +20,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public void saveToArray(int index, Resume resume) throws StorageException {
         if (currentSize >= MAX_SIZE) {
             throw new StorageException("Storage overloaded.", resume.getUuid());
-        } else if (index < 0) {
+        } else
             saveToMainArray(index, resume);
-            currentSize++;
-        } else {
-            throw new ExistException(resume.getUuid());
-        }
+        currentSize++;
     }
 
     public void updateResumeToStorage(int index, Resume resume) {
@@ -46,10 +42,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     public void deleteFromArray(int index) {
-        System.arraycopy(storage, index + 1, storage, index, currentSize - index - 1);
-        storage[currentSize - 1] = null;
+        deleteFromMainArray(index);
         currentSize--;
     }
+
+    protected abstract void deleteFromMainArray(int index);
 
     protected abstract void saveToMainArray(int index, Resume resume);
 }

@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.ExistException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.*;
@@ -15,11 +14,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void saveToArray(int index, Resume resume) {
-        if (index < 0) {
-            storage.add(resume);
-        } else {
-            throw new ExistException(resume.getUuid());
-        }
+        storage.add(resume);
     }
 
     @Override
@@ -49,14 +44,11 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public int getIndex(String uuid) {
-        int i = 0;
-        int index = -1;
-        while (i < storage.size()) {
-            if (storage.get(i).getUuid().equals(uuid)) {
-                index = i;
+        for (int index = 0; index < storage.size(); index++) {
+            if (storage.get(index).getUuid().equals(uuid)) {
+                return index;
             }
-            i++;
         }
-        return index;
+        return -1;
     }
 }

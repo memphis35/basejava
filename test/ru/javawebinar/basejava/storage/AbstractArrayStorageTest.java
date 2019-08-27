@@ -18,7 +18,7 @@ public abstract class AbstractArrayStorageTest {
     private Resume r4 = new Resume("4444");
     private Resume r5 = r2;
 
-    public AbstractArrayStorageTest(Storage test) {
+    AbstractArrayStorageTest(Storage test) {
         storage = test;
     }
 
