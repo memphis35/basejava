@@ -6,13 +6,14 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.HashMap;
 
-public abstract class MapStorage extends AbstractStorage {
+public class MapStorage implements Storage {
     private HashMap<String, Resume> storage = new HashMap<>();
 
     public void clear() {
         storage.clear();
     }
 
+    @Override
     public void save(Resume resume) {
         if (!storage.containsValue(resume)) {
             storage.put(resume.getUuid(), resume);
@@ -20,6 +21,7 @@ public abstract class MapStorage extends AbstractStorage {
             throw new ExistException(resume.getUuid());
         }
     }
+
     public void update(Resume resume) {
         if (storage.containsValue(resume)) {
             storage.replace(resume.getUuid(), resume);
