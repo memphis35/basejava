@@ -20,9 +20,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public void saveToArray(int index, Resume resume) throws StorageException {
         if (currentSize >= MAX_SIZE) {
             throw new StorageException("Storage overloaded.", resume.getUuid());
-        } else
+        } else {
             saveToMainArray(index, resume);
-        currentSize++;
+            currentSize++;
+        }
     }
 
     public void updateResumeToStorage(int index, Resume resume) {
@@ -43,6 +44,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     public void deleteFromArray(int index) {
         deleteFromMainArray(index);
+        storage[currentSize - 1] = null;
         currentSize--;
     }
 

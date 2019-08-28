@@ -16,7 +16,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
     public void deleteFromMainArray(int index) {
         System.arraycopy(storage, index + 1, storage, index, currentSize - index - 1);
-        storage[currentSize - 1] = null;
     }
 
 
