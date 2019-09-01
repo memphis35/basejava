@@ -1,56 +1,61 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.ExistException;
-import ru.javawebinar.basejava.exception.NotExistException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.HashMap;
+import java.util.*;
 
-public class MapStorage implements Storage {
+public class MapStorage extends AbstractStorage {
     private HashMap<String, Resume> storage = new HashMap<>();
 
+    @Override
+    protected void saveToArray(Object key, Resume resume) {
+        storage.put((String) key, resume);
+    }
+
+    @Override
+    protected void updateResumeToStorage(Object key, Resume resume) {
+        storage.replace((String) key, resume);
+    }
+
+    @Override
+    protected Resume getResume(Object key) {
+        return storage.get(key);
+    }
+
+    @Override
+    protected boolean isExistKey(String uuid) {
+        Iterator it = storage.keySet().iterator();
+        while (it.hasNext()) {
+            if (it.next().equals(uuid)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    protected void deleteFromArray(Object key) {
+        storage.remove(key);
+    }
+
+    @Override
+    public Object getKey(String uuid) {
+        return uuid;
+    }
+
+    @Override
     public void clear() {
         storage.clear();
     }
 
     @Override
-    public void save(Resume resume) {
-        if (!storage.containsValue(resume)) {
-            storage.put(resume.getUuid(), resume);
-        } else {
-            throw new ExistException(resume.getUuid());
-        }
-    }
-
-    public void update(Resume resume) {
-        if (storage.containsValue(resume)) {
-            storage.replace(resume.getUuid(), resume);
-        } else {
-            throw new NotExistException(resume.getUuid());
-        }
-    }
-
-    public Resume get(String uuid) {
-        if (storage.containsKey(uuid)) {
-            return storage.get(uuid);
-        } else {
-            throw new NotExistException(uuid);
-        }
-    }
-
-    public void delete(String uuid) {
-        if (storage.containsKey(uuid)) {
-            storage.remove(uuid);
-        } else {
-            throw new NotExistException(uuid);
-        }
-    }
-
     public Resume[] getAll() {
         return storage.values().toArray(new Resume[0]);
     }
 
+    @Override
     public int size() {
         return storage.size();
     }
 }
+

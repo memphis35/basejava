@@ -17,21 +17,21 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         System.out.println("Storage successfully cleared.");
     }
 
-    public void saveToArray(int index, Resume resume) throws StorageException {
+    public void saveToArray(Object key, Resume resume) throws StorageException {
         if (currentSize >= MAX_SIZE) {
             throw new StorageException("Storage overloaded.", resume.getUuid());
         } else {
-            saveToMainArray(index, resume);
+            saveToMainArray((int)key, resume);
             currentSize++;
         }
     }
 
-    public void updateResumeToStorage(int index, Resume resume) {
-        storage[index] = resume;
+    public void updateResumeToStorage(Object key, Resume resume) {
+        storage[(int) key] = resume;
     }
 
-    public Resume getResume(int index) {
-        return storage[index];
+    public Resume getResume(Object key) {
+        return storage[(int) key];
     }
 
     public Resume[] getAll() {
@@ -42,8 +42,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return currentSize;
     }
 
-    public void deleteFromArray(int index) {
-        deleteFromMainArray(index);
+    public void deleteFromArray( Object key) {
+        deleteFromMainArray((int) key);
         storage[currentSize - 1] = null;
         currentSize--;
     }

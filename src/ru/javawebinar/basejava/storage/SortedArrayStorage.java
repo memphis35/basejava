@@ -8,7 +8,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     public void saveToMainArray(int index, Resume resume) {
-        int i = -index - 1;
+        int i = - index - 1;
         System.arraycopy(storage, i, storage, i + 1, currentSize - i);
         storage[i] = resume;
     }
@@ -18,9 +18,13 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         System.arraycopy(storage, index + 1, storage, index, currentSize - index - 1);
     }
 
+    @Override
+    protected boolean isExistKey(String uuid) {
+        return (int) getKey(uuid) >= 0;
+    }
 
     @Override
-    public int getIndex(String uuid) {
+    public Object getKey(String uuid) {
         return Arrays.binarySearch(storage, 0, currentSize, new Resume(uuid));
     }
 }

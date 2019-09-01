@@ -8,48 +8,46 @@ import ru.javawebinar.basejava.model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     public void save(Resume resume) throws StorageException {
-        int index = getIndex(resume.getUuid());
-        if (index < 0) {
-            saveToArray(index, resume);
+        if (!isExistKey(resume.getUuid())) {
+            saveToArray(getKey(resume.getUuid()), resume);
         } else {
             throw new ExistException(resume.getUuid());
         }
     }
 
-    protected abstract void saveToArray(int index, Resume resume);
+    protected abstract void saveToArray(Object key, Resume resume);
 
     public void update(Resume resume) throws NotExistException {
-        int index = getIndex(resume.getUuid());
-        if (index >= 0) {
-            updateResumeToStorage(index, resume);
+        if (isExistKey(resume.getUuid())) {
+            updateResumeToStorage(getKey(resume.getUuid()), resume);
         } else {
             throw new NotExistException(resume.getUuid());
         }
     }
 
-    abstract void updateResumeToStorage(int index, Resume resume);
-
     public Resume get(String uuid) throws NotExistException {
-        int index = getIndex(uuid);
-        if (index >= 0) {
-            return getResume(index);
+        if (isExistKey(uuid)) {
+            return getResume(getKey(uuid));
         } else {
             throw new NotExistException(uuid);
         }
     }
-
-    abstract Resume getResume(int index);
 
     public void delete(String uuid) throws NotExistException {
-        int index = getIndex(uuid);
-        if (index >= 0) {
-            deleteFromArray(index);
+        if (isExistKey(uuid)) {
+            deleteFromArray(getKey(uuid));
         } else {
             throw new NotExistException(uuid);
         }
     }
 
-    protected abstract void deleteFromArray(int index);
+    protected abstract void updateResumeToStorage(Object key, Resume resume);
 
-    public abstract int getIndex(String uuid);
+    protected abstract Resume getResume(Object key);
+
+    protected abstract boolean isExistKey(String uuid);
+
+    protected abstract void deleteFromArray(Object key);
+
+    public abstract Object getKey(String uuid);
 }
