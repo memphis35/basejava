@@ -21,7 +21,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         if (currentSize >= MAX_SIZE) {
             throw new StorageException("Storage overloaded.", resume.getUuid());
         } else {
-            saveToMainArray((int)key, resume);
+            saveToMainArray((int) key, resume);
             currentSize++;
         }
     }
@@ -42,10 +42,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return currentSize;
     }
 
-    public void deleteFromArray( Object key) {
+    public void deleteFromArray(Object key) {
         deleteFromMainArray((int) key);
         storage[currentSize - 1] = null;
         currentSize--;
+    }
+
+    protected boolean isExistKey(String uuid) {
+        return (int) getKey(uuid) >= 0;
     }
 
     protected abstract void deleteFromMainArray(int index);

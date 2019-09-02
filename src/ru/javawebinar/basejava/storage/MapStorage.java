@@ -2,10 +2,11 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
-    private HashMap<String, Resume> storage = new HashMap<>();
+    private Map<String, Resume> storage = new HashMap<>();
 
     @Override
     protected void saveToArray(Object key, Resume resume) {
@@ -24,13 +25,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected boolean isExistKey(String uuid) {
-        Iterator it = storage.keySet().iterator();
-        while (it.hasNext()) {
-            if (it.next().equals(uuid)) {
-                return true;
-            }
-        }
-        return false;
+        return storage.containsKey(uuid);
     }
 
     @Override
