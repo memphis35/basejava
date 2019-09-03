@@ -33,8 +33,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExistKey(String uuid) {
-        return (int) getKey(uuid) >= 0;
+    protected boolean isExistKey(Object key) {
+        return (int) key >= 0;
     }
 
     @Override

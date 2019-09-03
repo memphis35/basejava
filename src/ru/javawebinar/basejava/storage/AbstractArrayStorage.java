@@ -48,8 +48,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         currentSize--;
     }
 
-    protected boolean isExistKey(String uuid) {
-        return (int) getKey(uuid) >= 0;
+    protected boolean isExistKey(Object key) {
+        return (int) key >= 0;
     }
 
     protected abstract void deleteFromMainArray(int index);
