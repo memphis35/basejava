@@ -18,45 +18,42 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         System.out.println("Storage successfully cleared.");
     }
 
-    public void saveToArray(Object key, Resume resume) throws StorageException {
+    public void saveToArray(Object searchKey, Resume resume) throws StorageException {
         if (currentSize >= MAX_SIZE) {
             throw new StorageException("Storage overloaded.", resume.getUuid());
         } else {
-            saveToMainArray((int) key, resume);
+            doSave((int) searchKey, resume);
             currentSize++;
         }
     }
 
-    public void updateResumeToStorage(Object key, Resume resume) {
-        storage[(int) key] = resume;
+    public void updateResumeToStorage(Object searchKey, Resume resume) {
+        storage[(int) searchKey] = resume;
     }
 
-    public Resume getResume(Object key) {
-        return storage[(int) key];
+    public Resume getResume(Object searchKey) {
+        return storage[(int) searchKey];
     }
 
     public int size() {
         return currentSize;
     }
 
-    public void deleteFromArray(Object key) {
-        deleteFromMainArray((int) key);
+    public void deleteFromArray(Object searchKey) {
+        doDelete((int) searchKey);
         storage[currentSize - 1] = null;
         currentSize--;
     }
 
-    protected boolean isExistKey(Object key) {
-        return (int) key >= 0;
+    protected boolean isExistKey(Object searchKey) {
+        return (int) searchKey >= 0;
     }
 
-    @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> list = Arrays.asList(Arrays.copyOf(storage, size()));
-        list.sort(super.comparator);
-        return list;
+    public List<Resume> getBox() {
+        return Arrays.asList(Arrays.copyOf(storage, size()));
     }
 
-    protected abstract void deleteFromMainArray(int index);
+    protected abstract void doDelete(int index);
 
-    protected abstract void saveToMainArray(int index, Resume resume);
+    protected abstract void doSave(int index, Resume resume);
 }

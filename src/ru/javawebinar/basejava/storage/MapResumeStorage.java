@@ -2,55 +2,49 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MapResumeStorage extends AbstractStorage {
     private Map<String, Resume> storage = new HashMap<>();
 
     @Override
-    protected void saveToArray(Object key, Resume resume) {
+    protected void saveToArray(Object searchKey, Resume resume) {
         storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected void updateResumeToStorage(Object key, Resume resume) {
+    protected void updateResumeToStorage(Object searchKey, Resume resume) {
         storage.replace(resume.getUuid(), resume);
     }
 
     @Override
-    protected Resume getResume(Object key) {
-        return storage.get(key.toString());
+    protected Resume getResume(Object searchKey) {
+        return storage.get(searchKey.toString());
     }
 
     @Override
-    protected boolean isExistKey(Object key) {
-        return storage.containsValue(key);
+    protected boolean isExistKey(Object searchKey) {
+        return storage.containsValue(searchKey);
     }
 
     @Override
-    protected void deleteFromArray(Object key) {
-        storage.remove(key.toString());
+    protected void deleteFromArray(Object searchKey) {
+        storage.remove(searchKey.toString());
     }
 
     @Override
-    public Object getKey(String uuid) {
+    public Object getSearchKey(String uuid) {
         return storage.get(uuid);
+    }
+
+    @Override
+    public List<Resume> getBox() {
+        return new ArrayList<>(storage.values());
     }
 
     @Override
     public void clear() {
         storage.clear();
-    }
-
-    @Override
-    public List<Resume> getAllSorted() {
-        Resume[] array = storage.values().toArray(new Resume[size()]);
-        List<Resume> list = Arrays.asList(array);
-        list.sort(super.comparator);
-        return list;
     }
 
     @Override
