@@ -13,32 +13,32 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void saveToArray(Object searchKey, Resume resume) {
+    protected void saveToStorage(Object index, Resume resume) {
         storage.add(resume);
     }
 
     @Override
-    protected void updateResumeToStorage(Object searchKey, Resume resume) {
-        storage.set((int) searchKey, resume);
+    protected void updateToStorage(Object index, Resume resume) {
+        storage.set((int) index, resume);
     }
 
     @Override
-    protected void deleteFromArray(Object searchKey) {
-        storage.remove((int) searchKey);
+    protected void deleteFromStorage(Object index) {
+        storage.remove((int) index);
     }
 
     @Override
-    protected Resume getResume(Object searchKey) {
-        return storage.get((int) searchKey);
+    protected Resume getResume(Object index) {
+        return storage.get((int) index);
     }
 
     @Override
-    protected boolean isExistKey(Object searchKey) {
-        return (int) searchKey >= 0;
+    protected boolean isExistKey(Object index) {
+        return (int) index >= 0;
     }
 
     @Override
-    public List<Resume> getBox() {
+    public List<Resume> getAll() {
         return this.storage;
     }
 
@@ -48,7 +48,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Object getSearchKey(String uuid) {
+    public Integer getSearchKey(String uuid) {
         for (int index = 0; index < storage.size(); index++) {
             if (storage.get(index).getUuid().equals(uuid)) {
                 return index;

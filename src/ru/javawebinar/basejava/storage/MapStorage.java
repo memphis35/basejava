@@ -11,12 +11,12 @@ public class MapStorage extends AbstractStorage {
     private Map<String, Resume> storage = new HashMap<>();
 
     @Override
-    protected void saveToArray(Object searchKey, Resume resume) {
+    protected void saveToStorage(Object searchKey, Resume resume) {
         storage.put((String) searchKey, resume);
     }
 
     @Override
-    protected void updateResumeToStorage(Object searchKey, Resume resume) {
+    protected void updateToStorage(Object searchKey, Resume resume) {
         storage.replace((String) searchKey, resume);
     }
 
@@ -31,17 +31,17 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void deleteFromArray(Object searchKey) {
+    protected void deleteFromStorage(Object searchKey) {
         storage.remove(searchKey);
     }
 
     @Override
-    public Object getSearchKey(String uuid) {
+    public String getSearchKey(String uuid) {
         return uuid;
     }
 
     @Override
-    public List<Resume> getBox() {
+    public List<Resume> getAll() {
         return new ArrayList<>(storage.values());
     }
 

@@ -14,17 +14,13 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
     @Test(expected = StorageException.class)
     public void saveOverloaded() {
         storage.clear();
-        int uuid = 1;
         for (int i = 0; i < 10_000; i++) {
-            Resume r = new Resume("uuid" + i, i + "ass");
             try {
-                storage.save(r);
-                uuid++;
+                storage.save(new Resume("name" + i));
             } catch (StorageException s) {
                 Assert.fail("Overflow");
             }
         }
-        Resume a = new Resume("OVERLOADING UUID", "OVERLOADING RESUME");
-        storage.save(a);
+        storage.save(new Resume("OVERLOADING UUID", "OVERLOADING RESUME"));
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     private final static int MAX_SIZE = 10_000;
-    protected int currentSize = 0;
+    int currentSize = 0;
     protected Resume[] storage = new Resume[MAX_SIZE];
 
     @Override
@@ -18,38 +18,38 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         System.out.println("Storage successfully cleared.");
     }
 
-    public void saveToArray(Object searchKey, Resume resume) throws StorageException {
+    public void saveToStorage(Object index, Resume resume) throws StorageException {
         if (currentSize >= MAX_SIZE) {
             throw new StorageException("Storage overloaded.", resume.getUuid());
         } else {
-            doSave((int) searchKey, resume);
+            doSave((int) index, resume);
             currentSize++;
         }
     }
 
-    public void updateResumeToStorage(Object searchKey, Resume resume) {
-        storage[(int) searchKey] = resume;
+    public void updateToStorage(Object index, Resume resume) {
+        storage[(int) index] = resume;
     }
 
-    public Resume getResume(Object searchKey) {
-        return storage[(int) searchKey];
+    public Resume getResume(Object index) {
+        return storage[(int) index];
     }
 
     public int size() {
         return currentSize;
     }
 
-    public void deleteFromArray(Object searchKey) {
-        doDelete((int) searchKey);
+    public void deleteFromStorage(Object index) {
+        doDelete((int) index);
         storage[currentSize - 1] = null;
         currentSize--;
     }
 
-    protected boolean isExistKey(Object searchKey) {
-        return (int) searchKey >= 0;
+    protected boolean isExistKey(Object index) {
+        return (int) index >= 0;
     }
 
-    public List<Resume> getBox() {
+    public List<Resume> getAll() {
         return Arrays.asList(Arrays.copyOf(storage, size()));
     }
 

@@ -1,18 +1,18 @@
 package ru.javawebinar.basejava.storage;
 
 import org.junit.*;
-import org.junit.jupiter.api.BeforeEach;
 import ru.javawebinar.basejava.exception.ExistException;
 import ru.javawebinar.basejava.exception.NotExistException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
-    protected final Storage storage;
+    final Storage storage;
     private Resume r1 = new Resume("uuid1","Aaron Paul");
     private Resume r2 = new Resume("uuid2","Nikki Six");
     private Resume r3 = new Resume("uuid3", "Mick Mars");
@@ -47,15 +47,14 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = ExistException.class)
     public void saveFailed() {
-        Resume r5 = r2;
-        storage.save(r5);
+        storage.save(r2);
     }
 
     @Test
     public void updateSuccess() {
-        Resume r5 = r2;
+        Resume r5 = new Resume(r2.getUuid(), "fullNameUpdated");
         storage.update(r5);
-        assertEquals(r5, storage.get(r5.getUuid()));
+        assertEquals(r5, storage.get(r2.getUuid()));
     }
 
     @Test(expected = NotExistException.class)
@@ -88,11 +87,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void getAllSorted() {
         storage.save(r4);
-        List<Resume> result = new ArrayList<>();
-        result.add(r1);
-        result.add(r4);
-        result.add(r3);
-        result.add(r2);
+        List<Resume> result = Arrays.asList(r1, r4, r3, r2);
         List<Resume> test1 = storage.getAllSorted();
         assertEquals(result, test1);
     }
