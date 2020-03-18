@@ -22,20 +22,15 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public void update(Resume resume) throws NotExistException {
-        if (checkKey(resume.getUuid())) {
-            updateToStorage(getSearchKey(resume.getUuid()), resume);
-        }
+        updateToStorage(checkKey(resume.getUuid()), resume);
     }
 
     public Resume get(String uuid) {
-        if (checkKey(uuid)) return getResume(getSearchKey(uuid));
-        return null;
+        return getResume(checkKey(uuid));
     }
 
     public void delete(String uuid) {
-        if (checkKey(uuid)) {
-            deleteFromStorage(getSearchKey(uuid));
-        }
+        deleteFromStorage(checkKey(uuid));
     }
 
     public List<Resume> getAllSorted() {
@@ -44,10 +39,10 @@ public abstract class AbstractStorage implements Storage {
         return result;
     }
 
-    private boolean checkKey(String uuid) throws NotExistException {
+    private Object checkKey(String uuid) throws NotExistException {
         Object key = getSearchKey(uuid);
         if (isExistKey(key)) {
-            return true;
+            return key;
         } else {
             throw new NotExistException(uuid);
         }
