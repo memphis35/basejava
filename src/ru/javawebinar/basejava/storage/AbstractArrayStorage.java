@@ -6,7 +6,7 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     private final static int MAX_SIZE = 10_000;
     int currentSize = 0;
     protected Resume[] storage = new Resume[MAX_SIZE];
@@ -18,7 +18,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         System.out.println("Storage successfully cleared.");
     }
 
-    public void saveToStorage(Object index, Resume resume) throws StorageException {
+    public void saveToStorage(Integer index, Resume resume) throws StorageException {
         if (currentSize >= MAX_SIZE) {
             throw new StorageException("Storage overloaded.", resume.getUuid());
         } else {
@@ -27,11 +27,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         }
     }
 
-    public void updateToStorage(Object index, Resume resume) {
+    public void updateToStorage(Integer index, Resume resume) {
         storage[(int) index] = resume;
     }
 
-    public Resume getResume(Object index) {
+    public Resume getResume(Integer index) {
         return storage[(int) index];
     }
 
@@ -39,13 +39,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return currentSize;
     }
 
-    public void deleteFromStorage(Object index) {
-        doDelete((int) index);
+    public void deleteFromStorage(Integer index) {
+        doDelete(index);
         storage[currentSize - 1] = null;
         currentSize--;
     }
 
-    protected boolean isExistKey(Object index) {
+    protected boolean isExistKey(Integer index) {
         return (int) index >= 0;
     }
 
