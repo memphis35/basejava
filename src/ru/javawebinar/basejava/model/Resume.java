@@ -1,15 +1,17 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Initial resume class
  */
+
 public class Resume implements Comparable<Resume> {
 
     private String uuid;
     private String fullName;
+    public HashMap<Contact, String> contacts = new HashMap<>();
+    public HashMap<SectionType, Information> personInfo = new HashMap<>();
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -18,6 +20,16 @@ public class Resume implements Comparable<Resume> {
     public Resume(String uuid, String fullName) {
         this.fullName = Objects.requireNonNull(fullName);
         this.uuid = Objects.requireNonNull(uuid);
+    }
+
+    public void show() {
+        System.out.printf("Resume from %s, ID %s\n", fullName, uuid);
+        for (Contact contact : contacts.keySet()) {
+            System.out.printf("%s: %s\n", contact.getTitle(), contacts.get(contact));
+        }
+        for (SectionType section : personInfo.keySet()) {
+            System.out.printf("%s: %s\n", section.getTitle(), personInfo.get(section).toString());
+        }
     }
 
     public void setUuid(String uuid) {
