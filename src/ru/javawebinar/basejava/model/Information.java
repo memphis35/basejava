@@ -4,8 +4,10 @@ import java.io.IOException;
 
 public abstract class Information<T> {
 
-    T data;
-
+    protected T data;
+    public void setData(T data) {
+        this.data = data;
+    }
     public T getData() {
         return data;
     }

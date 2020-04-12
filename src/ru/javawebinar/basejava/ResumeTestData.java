@@ -2,35 +2,36 @@ package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.*;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class ResumeTestData {
 
     public static void main(String[] args) throws IOException {
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("Enter the name: ");
-        Resume test = new Resume(reader.readLine());
-        System.out.printf("Creating %s resume ID %s\n", test.getFullName(), test.getUuid());
+        Resume test = new Resume("Alexander Smirnov");
+
         for (Contact element : Contact.values()) {
-            System.out.print("Enter a " + element.getTitle());
-            test.contacts.put(element, reader.readLine());
+            test.contacts.put(element, "something info");
         }
         for (SectionType element : SectionType.values()) {
-            System.out.printf("Enter a %s: \n", element.name());
             if (element.name().equals("PERSONAL") || element.name().equals("OBJECTIVE")) {
-                test.personInfo.put(element, new SimpleInfo(reader.readLine()));
+                SimpleInfo elementInfo = new SimpleInfo();
+                elementInfo.setData("simpleInfo");
+                test.personInfo.put(element, elementInfo);
             }
             if (element.name().equals("ACHIEVEMENTS") || element.name().equals("QUALIFICATION")) {
-                test.personInfo.put(element, new ListInfo());
+                ListInfo elementInfo = new ListInfo();
+                elementInfo.addElement("someListInfo");
+                test.personInfo.put(element, elementInfo);
             }
             if (element.name().equals("EXPERIENCE") || element.name().equals("EDUCATION")) {
-                test.personInfo.put(element, new TableInfo());
+                TableInfo elementInfo = new TableInfo();
+                elementInfo.addElement("someName", "someDate", "somePosition", "someDescription");
+                test.personInfo.put(element, elementInfo);
             }
         }
-        reader.close();
+
         test.show();
     }
 }
