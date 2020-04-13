@@ -3,7 +3,6 @@ package ru.javawebinar.basejava;
 import ru.javawebinar.basejava.model.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class ResumeTestData {
 
@@ -21,8 +20,8 @@ public class ResumeTestData {
                 test.personInfo.put(element, elementInfo);
             }
             if (element.name().equals("ACHIEVEMENTS") || element.name().equals("QUALIFICATION")) {
-                ListInfo elementInfo = new ListInfo();
-                elementInfo.addElement("someListInfo");
+                ListSection elementInfo = new ListSection();
+                elementInfo.addItem("someListInfo");
                 test.personInfo.put(element, elementInfo);
             }
             if (element.name().equals("EXPERIENCE") || element.name().equals("EDUCATION")) {
@@ -32,6 +31,6 @@ public class ResumeTestData {
             }
         }
 
-        test.show();
+        System.out.println(test.toString());
     }
 }

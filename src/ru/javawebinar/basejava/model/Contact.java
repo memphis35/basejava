@@ -10,7 +10,7 @@ public enum Contact {
     STACKOVERFLOW("Profile on StackOverFlow.com: "),
     HOMEPAGE("Homepage: ");
 
-    String title;
+    private String title;
 
     Contact(String title) {
         this.title = title;

@@ -1,13 +1,13 @@
 package ru.javawebinar.basejava.model;
 
-import java.io.IOException;
-
-public abstract class Information<T> {
+public abstract class Section<T> {
 
     protected T data;
+
     public void setData(T data) {
         this.data = data;
     }
+
     public T getData() {
         return data;
     }
