@@ -2,13 +2,13 @@ package ru.javawebinar.basejava.model;
 
 public abstract class Section<T> {
 
-    protected T data;
+    final T content;
 
-    public void setData(T data) {
-        this.data = data;
+    protected Section(T content) {
+        this.content = content;
     }
 
-    public T getData() {
-        return data;
+    public T getContent() {
+        return content;
     }
 }
