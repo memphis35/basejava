@@ -2,11 +2,12 @@ package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.*;
 
-import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class ResumeTestData {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         Resume test = new Resume("Alexander Smirnov");
 
@@ -15,18 +16,17 @@ public class ResumeTestData {
         }
         for (SectionType element : SectionType.values()) {
             if (element.name().equals("PERSONAL") || element.name().equals("OBJECTIVE")) {
-                SimpleInfo elementInfo = new SimpleInfo();
-                elementInfo.setData("simpleInfo");
+                StringSection elementInfo = new StringSection("simpleInfo");
                 test.personInfo.put(element, elementInfo);
             }
             if (element.name().equals("ACHIEVEMENTS") || element.name().equals("QUALIFICATION")) {
-                ListSection elementInfo = new ListSection();
+                ListSection elementInfo = new ListSection(new ArrayList<>());
                 elementInfo.addItem("someListInfo");
                 test.personInfo.put(element, elementInfo);
             }
             if (element.name().equals("EXPERIENCE") || element.name().equals("EDUCATION")) {
-                TableInfo elementInfo = new TableInfo();
-                elementInfo.addElement("someName", "someDate", "somePosition", "someDescription");
+                ComplexSection elementInfo = new ComplexSection(new ArrayList<>());
+                elementInfo.addElement("someTitle", LocalDate.of(1, 1, 1), LocalDate.of(2, 2, 2), "someDescription");
                 test.personInfo.put(element, elementInfo);
             }
         }
