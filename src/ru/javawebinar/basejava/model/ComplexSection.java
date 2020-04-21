@@ -4,15 +4,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ComplexSection extends Section<ArrayList<Position>> {
+public class ComplexSection extends Section<ArrayList<Organization>> {
 
-    public ComplexSection(ArrayList<Position> content) {
+    public ComplexSection(ArrayList<Organization> content) {
         super(content);
         Objects.requireNonNull(content, "ComplexSection must not be null.");
     }
 
     public void addElement(String title, LocalDate startDate, LocalDate endDate, String description) {
-        Position element = new Position(null, startDate, endDate, title, description);
+        Organization element = new Organization(null, new Organization.Position(startDate, endDate, title, description));
         if (!content.contains(element)) {
             content.add(element);
         }
@@ -21,7 +21,7 @@ public class ComplexSection extends Section<ArrayList<Position>> {
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        for (Position p : content) {
+        for (Organization p : content) {
             result.append(p.toString());
         }
         return result.toString();
