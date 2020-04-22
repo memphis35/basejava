@@ -8,7 +8,7 @@ public class OrganizationSection extends Section<ArrayList<Organization>> {
 
     public OrganizationSection(ArrayList<Organization> content) {
         super(content);
-        Objects.requireNonNull(content, "ComplexSection must not be null.");
+        Objects.requireNonNull(content, "OrganizationSection must not be null.");
     }
 
     public void addElement(String title, LocalDate startDate, LocalDate endDate, String description) {
