@@ -22,14 +22,14 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public List<Resume> getAll() {
         List<Resume> list = new ArrayList<>();
-        for (File f : destination.listFiles()) {
+        for (File f : Objects.requireNonNull(destination.listFiles())) {
             list.add(read(f));
         }
         return list;
     }
 
     @Override
-    protected void saveToStorage(File searchKey, Resume resume) throws IOException {
+    protected void saveToStorage(File searchKey, Resume resume){
         write(searchKey, resume);
     }
 
@@ -55,7 +55,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        for (File f : destination.listFiles()) {
+        for (File f : Objects.requireNonNull(destination.listFiles())) {
             f.delete();
         }
     }

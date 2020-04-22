@@ -8,7 +8,7 @@ public class MainFile {
 
     public static void main(String[] args) throws IOException {
 
-        File dir = new File("D:\\basejava\\src");
+        File dir = new File(".\\src\\ru\\javawebinar\\basejava");
         System.out.println(dir.isDirectory());
         File[] list = dir.listFiles();
         System.out.println(dir.getCanonicalPath());

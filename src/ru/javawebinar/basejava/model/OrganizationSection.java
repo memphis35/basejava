@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ComplexSection extends Section<ArrayList<Organization>> {
+public class OrganizationSection extends Section<ArrayList<Organization>> {
 
-    public ComplexSection(ArrayList<Organization> content) {
+    public OrganizationSection(ArrayList<Organization> content) {
         super(content);
         Objects.requireNonNull(content, "ComplexSection must not be null.");
     }

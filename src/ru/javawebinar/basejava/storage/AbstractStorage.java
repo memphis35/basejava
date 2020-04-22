@@ -4,7 +4,6 @@ import ru.javawebinar.basejava.exception.ExistException;
 import ru.javawebinar.basejava.exception.NotExistException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -14,11 +13,11 @@ public abstract class AbstractStorage<T> implements Storage {
     private Comparator<Resume> comparator = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
-    public void save(Resume resume) throws IOException {
+    public void save(Resume resume){
         T searchKey = getSearchKey(resume.getUuid());
         if (!isExistKey(searchKey)) {
-            saveToStorage(searchKey, resume);
-            LOG.info("Save " + resume);
+                saveToStorage(searchKey, resume);
+                LOG.info("Save " + resume);
         } else {
             LOG.warning(resume + " already exist.");
             throw new ExistException(resume.getUuid());
@@ -58,7 +57,7 @@ public abstract class AbstractStorage<T> implements Storage {
 
     public abstract List<Resume> getAll();
 
-    protected abstract void saveToStorage(T searchKey, Resume resume) throws IOException;
+    protected abstract void saveToStorage(T searchKey, Resume resume);
 
     protected abstract void updateToStorage(T searchKey, Resume resume);
 

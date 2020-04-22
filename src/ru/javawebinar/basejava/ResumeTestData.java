@@ -11,7 +11,7 @@ public class ResumeTestData {
 
         Resume test = new Resume("Alexander Smirnov");
 
-        for (Contact element : Contact.values()) {
+        for (ContactType element : ContactType.values()) {
             test.contacts.put(element, "something info");
         }
         for (SectionType element : SectionType.values()) {
@@ -25,7 +25,7 @@ public class ResumeTestData {
                 test.personInfo.put(element, elementInfo);
             }
             if (element.name().equals("EXPERIENCE") || element.name().equals("EDUCATION")) {
-                ComplexSection elementInfo = new ComplexSection(new ArrayList<>());
+                OrganizationSection elementInfo = new OrganizationSection(new ArrayList<>());
                 elementInfo.addElement("someTitle", LocalDate.of(1, 1, 1), LocalDate.of(2, 2, 2), "someDescription");
                 test.personInfo.put(element, elementInfo);
             }
