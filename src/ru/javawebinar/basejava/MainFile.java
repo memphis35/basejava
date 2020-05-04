@@ -12,16 +12,17 @@ public class MainFile {
         System.out.println(dir.isDirectory());
         File[] list = dir.listFiles();
         System.out.println(dir.getCanonicalPath());
-        if (list != null) showAllFiles(dir);
+        if (list != null) showAllFiles(dir, "");
     }
 
-    public static void showAllFiles(File file) throws IOException {
+    private static void showAllFiles(File file, String tab) {
         if (file.isDirectory()) {
-            System.out.println("Folder: " + file.getName());
+            tab = tab + "\t";
+            System.out.println(tab + "Folder: " + file.getName());
             for (File f : Objects.requireNonNull(file.listFiles())) {
-                showAllFiles(f);
+                showAllFiles(f, tab);
             }
         }
-        if (!file.isDirectory()) System.out.println("\tFile: " + file.getName());
+        if (!file.isDirectory()) System.out.println(tab + "\tFile: " + file.getName());
     }
 }
