@@ -5,8 +5,8 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.io.*;
 
-public class ObjectStreamStorage extends AbstractFileStorage {
-    ObjectStreamStorage(File dir) throws IOException {
+public class ObjectStreamFileStorage extends AbstractFileStorage {
+    ObjectStreamFileStorage(File dir) throws IOException {
         super(dir);
     }
 

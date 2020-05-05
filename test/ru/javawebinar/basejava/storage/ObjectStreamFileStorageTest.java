@@ -5,6 +5,6 @@ import java.io.IOException;
 public class ObjectStreamFileStorageTest extends AbstractStorageTest {
 
     public ObjectStreamFileStorageTest() throws IOException {
-        super(new ObjectStreamStorage(STORAGE_DIR));
+        super(new ObjectStreamFileStorage(STORAGE_DIR));
     }
 }
