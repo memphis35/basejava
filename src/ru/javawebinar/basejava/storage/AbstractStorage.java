@@ -13,11 +13,11 @@ public abstract class AbstractStorage<T> implements Storage {
     private Comparator<Resume> comparator = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
-    public void save(Resume resume){
+    public void save(Resume resume) {
         T searchKey = getSearchKey(resume.getUuid());
         if (!isExistKey(searchKey)) {
                 saveToStorage(searchKey, resume);
-                LOG.info("Save " + resume);
+                //LOG.info("Save " + resume.getUuid());
         } else {
             LOG.warning(resume + " already exist.");
             throw new ExistException(resume.getUuid());
@@ -26,7 +26,7 @@ public abstract class AbstractStorage<T> implements Storage {
 
     public void update(Resume resume) {
         updateToStorage(checkKey(resume.getUuid()), resume);
-        LOG.info("Update " + resume);
+        LOG.info("Update " + resume.getUuid());
     }
 
     public Resume get(String uuid) {

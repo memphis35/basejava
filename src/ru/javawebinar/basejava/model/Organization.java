@@ -1,9 +1,10 @@
 package ru.javawebinar.basejava.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
-class Organization {
+public class Organization implements Serializable {
 
     private final Link homepage;
     private List<Position> positions = new ArrayList<>();
@@ -11,7 +12,7 @@ class Organization {
 
     public Organization(Link homepage, Position...position) {
         this.homepage = homepage;
-        Collections.addAll(Arrays.asList(position));
+        Collections.addAll(positions, position);
     }
 
     @Override
@@ -28,7 +29,7 @@ class Organization {
         return sb.toString();
     }
 
-    protected static class Position {
+    public static class Position implements Serializable {
         private final LocalDate startDate;
         private final LocalDate endDate;
         private final String title;
@@ -46,10 +47,7 @@ class Organization {
 
         @Override
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("\n\t").append(startDate).append('-').append(endDate).append(' ').append(title);
-            if (description != null) sb.append("\n\t").append(description);
-            return sb.toString();
+            return String.format("\n\tPeriod: %s - %s | Title: %s | Description: %s", startDate.toString(), endDate.toString(), title, description);
         }
 
         @Override

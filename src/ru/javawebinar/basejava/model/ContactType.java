@@ -1,6 +1,8 @@
 package ru.javawebinar.basejava.model;
 
-public enum ContactType {
+import java.io.Serializable;
+
+public enum ContactType implements Serializable {
 
     PHONE("Phone: "),
     SKYPE("Skype: "),

@@ -1,46 +1,63 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
-    private File destination;
+    protected File dir;
 
-    public AbstractFileStorage(File destination) throws IOException {
-        Objects.requireNonNull(destination, "Destination path must not be null");
-        if (!destination.canRead() || !destination.canWrite())
-            throw new RuntimeException(destination.getCanonicalPath() + "isn't readable/writeable");
-        this.destination = destination;
+    public AbstractFileStorage(File dir) throws IOException {
+        Objects.requireNonNull(dir, "Destination path must not be null");
+        if (!dir.canRead() || !dir.canWrite())
+            throw new RuntimeException(dir.getCanonicalPath() + "isn't readable/writeable");
+        this.dir = dir;
     }
 
     @Override
     public List<Resume> getAll() {
         List<Resume> list = new ArrayList<>();
-        for (File f : Objects.requireNonNull(destination.listFiles())) {
-            list.add(read(f));
+        for (File f : Objects.requireNonNull(dir.listFiles())) {
+            try {
+                list.add(read(new FileInputStream(f)));
+            } catch (IOException e) {
+                throw new StorageException("File read error", e, f.getName());
+            }
         }
         return list;
     }
 
     @Override
-    protected void saveToStorage(File searchKey, Resume resume){
-        write(searchKey, resume);
+    protected void saveToStorage(File searchKey, Resume resume) {
+        try {
+            searchKey.createNewFile();
+            updateToStorage(searchKey, resume);
+        } catch (IOException e) {
+            throw new StorageException("File write error.", e, searchKey.getName());
+        }
     }
 
     @Override
     protected void updateToStorage(File searchKey, Resume resume) {
-        write(searchKey, resume);
+        try {
+            write(new FileOutputStream(searchKey), resume);
+        } catch (FileNotFoundException e) {
+            throw new StorageException("File not found.", e, searchKey.getName());
+        }
     }
 
     @Override
     protected Resume getResume(File searchKey) {
-        return read(searchKey);
+        try {
+            return read(new FileInputStream(searchKey));
+        } catch (IOException e) {
+            throw new StorageException("File read error", e, searchKey.getName());
+        }
     }
 
     @Override
@@ -50,23 +67,30 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void deleteFromStorage(File searchKey) {
-        searchKey.delete();
+        if (!searchKey.delete()) {
+            throw new StorageException("Can't find file to delete.", searchKey.getName());
+        }
     }
 
     @Override
     public void clear() {
-        for (File f : Objects.requireNonNull(destination.listFiles())) {
-            f.delete();
+        for (File f : Objects.requireNonNull(dir.listFiles())) {
+            deleteFromStorage(f);
         }
     }
 
     @Override
     public int size() {
-        return destination.listFiles().length;
+        return Objects.requireNonNull(dir.listFiles()).length;
     }
 
-    protected abstract void write(File newFile, Resume resume);
+    @Override
+    public File getSearchKey(String uuid) {
+        return new File(dir, uuid);
+    }
 
-    protected abstract Resume read(File searchKey);
+    protected abstract void write(FileOutputStream newFile, Resume resume);
+
+    protected abstract Resume read(FileInputStream searchKey);
 
 }

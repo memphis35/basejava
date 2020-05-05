@@ -1,12 +1,13 @@
 package ru.javawebinar.basejava.model;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Initial resume class
  */
 
-public class Resume implements Comparable<Resume> {
+public class Resume implements Comparable<Resume>, Serializable {
 
     private String uuid;
     private String fullName;
@@ -62,7 +63,7 @@ public class Resume implements Comparable<Resume> {
             result.append(contactType.getTitle()).append(": ").append(contacts.get(contactType)).append('\n');
         }
         for (SectionType section : personInfo.keySet()) {
-            result.append(section.getTitle()).append(": ").append(personInfo.get(section).toString()).append('\n');
+            result.append(section.getTitle()).append(": ").append(personInfo.get(section)).append('\n');
         }
         return result.toString();
     }

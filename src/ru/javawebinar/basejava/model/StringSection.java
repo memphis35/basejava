@@ -27,5 +27,4 @@ public class StringSection extends Section<String> {
     public String toString() {
         return content;
     }
-
 }

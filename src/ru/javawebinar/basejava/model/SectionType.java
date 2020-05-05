@@ -1,6 +1,8 @@
 package ru.javawebinar.basejava.model;
 
-public enum SectionType {
+import java.io.Serializable;
+
+public enum SectionType implements Serializable {
 
     PERSONAL("Личные качества"),
     OBJECTIVE("Позиция"),
