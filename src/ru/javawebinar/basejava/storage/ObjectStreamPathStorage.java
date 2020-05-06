@@ -4,7 +4,7 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.io.*;
 
-class ObjectStreamPathStorage extends AbstractPathStorage {
+class ObjectStreamPathStorage extends AbstractPathStorage implements Strategy {
 
     private ObjectStreamFileStorage storage;
 
@@ -14,12 +14,12 @@ class ObjectStreamPathStorage extends AbstractPathStorage {
     }
 
     @Override
-    void write(BufferedOutputStream out, Resume resume) {
+    public void write(BufferedOutputStream out, Resume resume) {
         storage.write(out, resume);
     }
 
     @Override
-    Resume read(BufferedInputStream in) {
+    public Resume read(BufferedInputStream in) {
         return storage.read(in);
     }
 }

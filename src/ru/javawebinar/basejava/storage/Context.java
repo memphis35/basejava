@@ -5,26 +5,26 @@ import java.io.IOException;
 
 public class Context {
 
+    Strategy strategy;
+
     public Context(SerializationType type) throws IOException {
         switch (type) {
             case JAVA_IO:
-                storage = new ObjectStreamFileStorage(new File("..\\storage"));
+                strategy = new ObjectStreamFileStorage(new File("..\\storage"));
                 break;
             case JAVA_NIO:
-                storage = new ObjectStreamPathStorage("..\\storage");
+                strategy = new ObjectStreamPathStorage("..\\storage");
                 break;
             default: break;
         }
     }
 
-    private Storage storage;
-
-    public void setStorage(Storage storage) {
-        this.storage = storage;
+    public Strategy getStrategy() {
+        return strategy;
     }
 
-    public Storage getStorage() {
-        return storage;
+    public void setStrategy(Strategy strategy) {
+        this.strategy = strategy;
     }
 
     public enum SerializationType {
