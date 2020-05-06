@@ -1,11 +1,11 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public class ListSection extends Section<ArrayList<String>> {
+public class ListSection extends Section<List<String>> {
 
-    public ListSection(ArrayList<String> content) {
+    public ListSection(List<String> content) {
         super(content);
         Objects.requireNonNull(content, "ListSection content must not be null.");
     }
@@ -23,7 +23,10 @@ public class ListSection extends Section<ArrayList<String>> {
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (this == obj) return true;
+        if (obj == null || !this.getClass().equals(obj.getClass())) return false;
+        ListSection o = (ListSection) obj;
+        return Objects.equals(this.content, o.content);
     }
 
     @Override

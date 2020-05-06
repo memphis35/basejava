@@ -26,7 +26,8 @@ public class ResumeTestData {
             }
             if (element.name().equals("EXPERIENCE") || element.name().equals("EDUCATION")) {
                 OrganizationSection elementInfo = new OrganizationSection(new ArrayList<>());
-                elementInfo.addElement("someTitle", LocalDate.of(1, 1, 1), LocalDate.of(2, 2, 2), "someDescription");
+                elementInfo.addOrganization(new Organization(new Link("someOrganizatiion", null), new Organization.Position(
+                        "someTitle", LocalDate.of(1, 1, 1), LocalDate.of(2, 2, 2), "someDescription")));
                 test.personInfo.put(element, elementInfo);
             }
         }

@@ -9,18 +9,17 @@ public class StringSection extends Section<String> {
         Objects.requireNonNull(content, "StringSection data must not be null.");
     }
 
-    public String getContent() {
-        return content;
-    }
-
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return content.hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (!(obj instanceof StringSection)) return false;
+        if (this == obj) return true;
+        StringSection o = (StringSection) obj;
+        return content.equals(o.content);
     }
 
     @Override

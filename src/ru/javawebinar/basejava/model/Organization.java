@@ -1,5 +1,7 @@
 package ru.javawebinar.basejava.model;
 
+import ru.javawebinar.basejava.exception.StorageException;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
@@ -13,6 +15,18 @@ public class Organization implements Serializable {
     public Organization(Link homepage, Position...position) {
         this.homepage = homepage;
         Collections.addAll(positions, position);
+    }
+
+    Link getHomepage() {
+        return homepage;
+    }
+
+    List<Position> getPositions() {
+        return positions;
+    }
+
+    public void addPosition(LocalDate startDate, LocalDate endDate, String title, String description) {
+        positions.add(new Position(title, startDate, endDate,  description));
     }
 
     @Override
@@ -35,7 +49,7 @@ public class Organization implements Serializable {
         private final String title;
         private final String description;
 
-        public Position(LocalDate startDate, LocalDate endDate, String title, String description) {
+        public Position(String title, LocalDate startDate, LocalDate endDate, String description) {
             Objects.requireNonNull(startDate, "Start date must not be null");
             Objects.requireNonNull(endDate, "End date must not be null");
             Objects.requireNonNull(title, "Title must not be null");
@@ -44,6 +58,8 @@ public class Organization implements Serializable {
             this.title = title;
             this.description = description;
         }
+
+
 
         @Override
         public String toString() {

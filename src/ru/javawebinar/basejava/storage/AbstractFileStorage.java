@@ -7,29 +7,18 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
-    protected File dir;
+    private File dir;
 
-    public AbstractFileStorage(File dir) throws IOException {
+    AbstractFileStorage(File dir) throws IOException {
         Objects.requireNonNull(dir, "Destination path must not be null");
         if (!dir.canRead() || !dir.canWrite())
-            throw new RuntimeException(dir.getCanonicalPath() + "isn't readable/writeable");
+            throw new IllegalArgumentException(dir.getCanonicalPath() + "isn't readable/writeable");
         this.dir = dir;
-    }
-
-    @Override
-    public List<Resume> getAll() {
-        List<Resume> list = new ArrayList<>();
-        for (File f : Objects.requireNonNull(dir.listFiles())) {
-            try {
-                list.add(read(new FileInputStream(f)));
-            } catch (IOException e) {
-                throw new StorageException("File read error", e, f.getName());
-            }
-        }
-        return list;
     }
 
     @Override
@@ -45,7 +34,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void updateToStorage(File searchKey, Resume resume) {
         try {
-            write(new FileOutputStream(searchKey), resume);
+            write(new BufferedOutputStream(new FileOutputStream(searchKey)), resume);
         } catch (FileNotFoundException e) {
             throw new StorageException("File not found.", e, searchKey.getName());
         }
@@ -54,7 +43,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected Resume getResume(File searchKey) {
         try {
-            return read(new FileInputStream(searchKey));
+            return read(new BufferedInputStream(new FileInputStream(searchKey)));
         } catch (IOException e) {
             throw new StorageException("File read error", e, searchKey.getName());
         }
@@ -73,15 +62,25 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
+    public List<Resume> getAll() {
+        return Stream.of(checkNullValue()).map(this::getResume).collect(Collectors.toList());
+    }
+
+    @Override
     public void clear() {
-        for (File f : Objects.requireNonNull(dir.listFiles())) {
+        for (File f : checkNullValue()) {
             deleteFromStorage(f);
         }
     }
 
     @Override
     public int size() {
-        return Objects.requireNonNull(dir.listFiles()).length;
+        return checkNullValue().length;
+    }
+
+    private File[] checkNullValue() {
+        if (dir.listFiles() != null) return dir.listFiles();
+        throw new StorageException("Object have null value.", null);
     }
 
     @Override
@@ -89,8 +88,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         return new File(dir, uuid);
     }
 
-    protected abstract void write(FileOutputStream newFile, Resume resume);
+    protected abstract void write(BufferedOutputStream out, Resume resume);
 
-    protected abstract Resume read(FileInputStream searchKey);
+    protected abstract Resume read(BufferedInputStream in);
 
 }
