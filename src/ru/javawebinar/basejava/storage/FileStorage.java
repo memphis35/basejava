@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractFileStorage extends AbstractStorage<File> {
+public class FileStorage extends AbstractStorage<File> {
 
     private File dir;
 
-    AbstractFileStorage(File dir) throws IOException {
+    FileStorage(File dir) throws IOException {
         Objects.requireNonNull(dir, "Destination path must not be null");
         if (!dir.canRead() || !dir.canWrite())
             throw new IllegalArgumentException(dir.getCanonicalPath() + "isn't readable/writeable");
@@ -90,8 +90,12 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         return new File(dir, uuid);
     }
 
-    protected abstract void write(BufferedOutputStream out, Resume resume);
+    private void write(BufferedOutputStream out, Resume resume) {
+        strategy.write(out, resume);
+    }
 
-    protected abstract Resume read(BufferedInputStream in);
+    private Resume read(BufferedInputStream in) {
+        return strategy.read(in);
+    }
 
 }

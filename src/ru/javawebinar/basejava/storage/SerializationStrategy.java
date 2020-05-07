@@ -5,7 +5,7 @@ import ru.javawebinar.basejava.model.Resume;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 
-public interface Strategy {
+public interface SerializationStrategy {
 
     void write(BufferedOutputStream newFile, Resume resume);
 

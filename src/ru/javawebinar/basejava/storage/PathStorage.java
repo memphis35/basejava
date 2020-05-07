@@ -10,10 +10,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private Path dir;
 
-    AbstractPathStorage(String dir) {
+    PathStorage(String dir) {
         Objects.requireNonNull(dir, "directory must not be null");
         this.dir = Paths.get(dir);
         if (!Files.isDirectory(this.dir) || !Files.isWritable(this.dir)) {
@@ -95,7 +95,11 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         }
     }
 
-    abstract void write(BufferedOutputStream out, Resume resume);
+    private void write(BufferedOutputStream out, Resume resume) {
+        strategy.write(out, resume);
+    }
 
-    abstract Resume read(BufferedInputStream in);
+    private Resume read(BufferedInputStream in) {
+        return strategy.read(in);
+    }
 }

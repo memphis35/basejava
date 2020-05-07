@@ -6,7 +6,7 @@ public abstract class Section<T> implements Serializable {
 
     final T content;
 
-    protected Section(T content) {
+    Section(T content) {
         this.content = content;
     }
 

@@ -1,7 +1,5 @@
 package ru.javawebinar.basejava.model;
 
-import ru.javawebinar.basejava.exception.StorageException;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;

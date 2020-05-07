@@ -10,8 +10,13 @@ import java.util.logging.Logger;
 
 public abstract class AbstractStorage<T> implements Storage {
 
+    SerializationStrategy strategy;
     private Comparator<Resume> comparator = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
+
+    public void setStrategy(SerializationStrategy strategy) {
+        this.strategy = strategy;
+    }
 
     public void save(Resume resume) {
         T searchKey = getSearchKey(resume.getUuid());

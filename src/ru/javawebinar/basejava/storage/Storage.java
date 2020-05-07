@@ -20,4 +20,6 @@ public interface Storage {
 
     int size();
 
+    void setStrategy(SerializationStrategy strategy);
+
 }

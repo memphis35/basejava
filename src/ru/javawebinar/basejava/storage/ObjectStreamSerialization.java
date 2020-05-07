@@ -5,10 +5,7 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.io.*;
 
-public class ObjectStreamFileStorage extends AbstractFileStorage implements Strategy {
-    ObjectStreamFileStorage(File dir) throws IOException {
-        super(dir);
-    }
+public class ObjectStreamSerialization implements SerializationStrategy {
 
     @Override
     public void write(BufferedOutputStream fileOut, Resume resume) {
