@@ -7,8 +7,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
@@ -63,7 +61,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public List<Resume> getAll() {
-        return Stream.of(checkNullValue()).map(this::getResume).collect(Collectors.toList());
+        List<Resume> list = new ArrayList<>();
+        for (File f : checkNullValue()) {
+            list.add(getResume(f));
+        }
+        return list;
     }
 
     @Override
