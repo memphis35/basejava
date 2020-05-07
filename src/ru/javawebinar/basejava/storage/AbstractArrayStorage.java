@@ -22,7 +22,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
         if (currentSize >= MAX_SIZE) {
             throw new StorageException("Storage overloaded.", resume.getUuid());
         } else {
-            doSave((int) index, resume);
+            doSave(index, resume);
             currentSize++;
         }
     }
