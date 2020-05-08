@@ -34,8 +34,8 @@ public class FileStorage extends AbstractStorage<File> {
     protected void updateToStorage(File searchKey, Resume resume) {
         try {
             write(new BufferedOutputStream(new FileOutputStream(searchKey)), resume);
-        } catch (FileNotFoundException e) {
-            throw new StorageException("File not found.", e, searchKey.getName());
+        } catch (IOException e) {
+            throw new StorageException("Storage write error.", e, searchKey.getName());
         }
     }
 
@@ -95,20 +95,11 @@ public class FileStorage extends AbstractStorage<File> {
         this.strategy = strategy;
     }
 
-    private void write(BufferedOutputStream out, Resume resume) {
-        try {
+    private void write(BufferedOutputStream out, Resume resume) throws IOException {
             strategy.write(out, resume);
-        } catch (IOException e) {
-            throw new StorageException("Storage write error", e, null);
-        }
     }
 
-    private Resume read(BufferedInputStream in) {
-        try {
+    private Resume read(BufferedInputStream in) throws IOException {
             return strategy.read(in);
-        } catch (IOException e) {
-            throw new StorageException("Storage read error", e, null);
-        }
     }
-
 }

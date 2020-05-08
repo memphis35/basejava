@@ -96,19 +96,11 @@ public class PathStorage extends AbstractStorage<Path> {
         this.strategy = strategy;
     }
 
-    private void write(BufferedOutputStream out, Resume resume) {
-        try {
-            strategy.write(out, resume);
-        } catch (IOException e) {
-            throw new StorageException("Storage write error", e, null);
-        }
+    private void write(BufferedOutputStream out, Resume resume) throws IOException {
+        strategy.write(out, resume);
     }
 
-    private Resume read(BufferedInputStream in) {
-        try {
-            return strategy.read(in);
-        } catch (IOException e) {
-            throw new StorageException("Storage read error", e, null);
-        }
+    private Resume read(BufferedInputStream in) throws IOException {
+        return strategy.read(in);
     }
 }
