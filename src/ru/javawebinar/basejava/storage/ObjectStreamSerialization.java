@@ -15,9 +15,11 @@ public class ObjectStreamSerialization implements SerializationStrategy {
     }
 
         @Override
-        public Resume read (InputStream fileIn) throws IOException, ClassNotFoundException {
+        public Resume read (InputStream fileIn) throws IOException {
             try (ObjectInputStream in = new ObjectInputStream(fileIn)) {
                 return (Resume) in.readObject();
+            } catch (ClassNotFoundException e) {
+                throw new StorageException("Class not found", e, null);
             }
         }
     }

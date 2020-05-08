@@ -10,5 +10,5 @@ public interface SerializationStrategy {
 
     void write(OutputStream out, Resume resume) throws IOException;
 
-    Resume read(InputStream in) throws IOException, ClassNotFoundException;
+    Resume read(InputStream in) throws IOException;
 }
