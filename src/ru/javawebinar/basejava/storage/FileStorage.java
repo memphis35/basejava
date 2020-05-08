@@ -11,6 +11,7 @@ import java.util.Objects;
 public class FileStorage extends AbstractStorage<File> {
 
     private File dir;
+    private SerializationStrategy strategy;
 
     FileStorage(File dir) throws IOException {
         Objects.requireNonNull(dir, "Destination path must not be null");
@@ -90,12 +91,12 @@ public class FileStorage extends AbstractStorage<File> {
         return new File(dir, uuid);
     }
 
-    private void write(BufferedOutputStream out, Resume resume) {
-        strategy.write(out, resume);
+    public void setStrategy(SerializationStrategy strategy) {
+        this.strategy = strategy;
     }
 
-    private Resume read(BufferedInputStream in) {
-        return strategy.read(in);
-    }
+    private void write(BufferedOutputStream out, Resume resume) { strategy.write(out, resume); }
+
+    private Resume read(BufferedInputStream in) { return strategy.read(in); }
 
 }

@@ -2,12 +2,13 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public interface SerializationStrategy {
 
-    void write(BufferedOutputStream newFile, Resume resume);
+    void write(OutputStream out, Resume resume) throws IOException;
 
-    Resume read(BufferedInputStream fileIn);
+    Resume read(InputStream in) throws IOException, ClassNotFoundException;
 }

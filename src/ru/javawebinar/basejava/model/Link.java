@@ -13,7 +13,7 @@ public class Link implements Serializable {
         this.url = url;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 

@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
     private Path dir;
+    private SerializationStrategy strategy;
 
     PathStorage(String dir) {
         Objects.requireNonNull(dir, "directory must not be null");
@@ -35,8 +36,6 @@ public class PathStorage extends AbstractStorage<Path> {
     protected void updateToStorage(Path searchKey, Resume resume) {
         try {
             write(new BufferedOutputStream(Files.newOutputStream(searchKey)), resume);
-        } catch (FileNotFoundException e) {
-            throw new StorageException("File not found", e, searchKey.getFileName().toString());
         } catch (IOException e) {
             throw new StorageException("Storage write error.", e, searchKey.getFileName().toString());
         }
@@ -46,8 +45,6 @@ public class PathStorage extends AbstractStorage<Path> {
     protected Resume getResume(Path searchKey) {
         try {
             return read(new BufferedInputStream(Files.newInputStream(searchKey)));
-        } catch (FileNotFoundException e) {
-            throw new StorageException("File not found", e, searchKey.getFileName().toString());
         } catch (IOException e) {
             throw new StorageException("Storage read error", e, searchKey.getFileName().toString());
         }
@@ -95,11 +92,11 @@ public class PathStorage extends AbstractStorage<Path> {
         }
     }
 
-    private void write(BufferedOutputStream out, Resume resume) {
-        strategy.write(out, resume);
+    public void setStrategy(SerializationStrategy strategy) {
+        this.strategy = strategy;
     }
 
-    private Resume read(BufferedInputStream in) {
-        return strategy.read(in);
-    }
+    private void write(BufferedOutputStream out, Resume resume) { strategy.write(out, resume); }
+
+    private Resume read(BufferedInputStream in) { return strategy.read(in); }
 }

@@ -19,7 +19,4 @@ public interface Storage {
     List<Resume> getAllSorted();
 
     int size();
-
-    void setStrategy(SerializationStrategy strategy);
-
 }

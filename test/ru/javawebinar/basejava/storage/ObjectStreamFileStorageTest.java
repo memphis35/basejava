@@ -6,6 +6,7 @@ public class ObjectStreamFileStorageTest extends AbstractStorageTest {
 
     public ObjectStreamFileStorageTest() throws IOException {
         super(new FileStorage(STORAGE_DIR));
-        storage.setStrategy(new ObjectStreamSerialization());
+        FileStorage test = (FileStorage) storage;
+        test.setStrategy(new ObjectStreamSerialization());
     }
 }

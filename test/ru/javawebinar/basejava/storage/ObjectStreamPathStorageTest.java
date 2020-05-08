@@ -1,10 +1,9 @@
 package ru.javawebinar.basejava.storage;
 
-import java.io.IOException;
-
 public class ObjectStreamPathStorageTest extends AbstractStorageTest {
-    public ObjectStreamPathStorageTest() throws IOException {
+    public ObjectStreamPathStorageTest() {
         super(new PathStorage(STORAGE_DIR.getAbsolutePath()));
-        storage.setStrategy(new ObjectStreamSerialization());
+        PathStorage test = (PathStorage) storage;
+        test.setStrategy(new ObjectStreamSerialization());
     }
 }

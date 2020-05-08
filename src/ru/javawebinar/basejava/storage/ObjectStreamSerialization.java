@@ -8,20 +8,16 @@ import java.io.*;
 public class ObjectStreamSerialization implements SerializationStrategy {
 
     @Override
-    public void write(BufferedOutputStream fileOut, Resume resume) {
+    public void write(OutputStream fileOut, Resume resume) throws IOException {
         try (ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
             out.writeObject(resume);
-        } catch (IOException e) {
-            throw new StorageException("Resume write error", e, null);
         }
     }
 
-    @Override
-    public Resume read(BufferedInputStream fileIn) {
-        try (ObjectInputStream in = new ObjectInputStream(fileIn)) {
-            return (Resume) in.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            throw new StorageException("Resume read error", e, null);
+        @Override
+        public Resume read (InputStream fileIn) throws IOException, ClassNotFoundException {
+            try (ObjectInputStream in = new ObjectInputStream(fileIn)) {
+                return (Resume) in.readObject();
+            }
         }
     }
-}
