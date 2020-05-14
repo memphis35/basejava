@@ -25,11 +25,11 @@ public class Organization implements Serializable {
         Collections.addAll(positions, position);
     }
 
-    Link getHomepage() {
+    public Link getHomepage() {
         return homepage;
     }
 
-    List<Position> getPositions() {
+    public List<Position> getPositions() {
         return positions;
     }
 
@@ -74,6 +74,22 @@ public class Organization implements Serializable {
             this.description = description;
         }
 
+        public LocalDate getStartDate() {
+            return startDate;
+        }
+
+        public LocalDate getEndDate() {
+            return endDate;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
         @Override
         public String toString() {
             return String.format("\n\tPeriod: %s - %s | Title: %s | Description: %s",
@@ -93,4 +109,5 @@ public class Organization implements Serializable {
                     this.description.equals(o.description));
         }
     }
+
 }

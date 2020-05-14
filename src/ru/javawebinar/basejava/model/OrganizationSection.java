@@ -3,14 +3,16 @@ package ru.javawebinar.basejava.model;
 import ru.javawebinar.basejava.exception.StorageException;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class OrganizationSection extends Section {
 
-    List<Organization> content;
+    private List<Organization> content;
 
     public OrganizationSection() {
+        content = new ArrayList<>();
     }
 
     public OrganizationSection(List<Organization> content) {
@@ -19,12 +21,14 @@ public class OrganizationSection extends Section {
     }
 
     public void addOrganization(Organization org) {
+        Objects.requireNonNull(org);
         if (!content.contains(org)) {
             content.add(org);
         } else {
             throw new StorageException("Organization already exist.", null);
         }
     }
+
 
     public void addPosition(String orgTitle, String title, LocalDate startDate, LocalDate endDate, String description) {
         for (Organization org : content) {
