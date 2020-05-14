@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.util.Serializer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -11,13 +12,15 @@ import java.util.Objects;
 public class FileStorage extends AbstractStorage<File> {
 
     private File dir;
-    private SerializationStrategy strategy;
+    private Serializer strategy;
 
-    FileStorage(File dir) throws IOException {
+    FileStorage(File dir, Serializer serializer) throws IOException {
         Objects.requireNonNull(dir, "Destination path must not be null");
+        Objects.requireNonNull(serializer, "Serialization method must not be null");
         if (!dir.canRead() || !dir.canWrite())
             throw new IllegalArgumentException(dir.getCanonicalPath() + "isn't readable/writeable");
         this.dir = dir;
+        this.strategy = serializer;
     }
 
     @Override
@@ -33,7 +36,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void updateToStorage(File searchKey, Resume resume) {
         try {
-            write(new BufferedOutputStream(new FileOutputStream(searchKey)), resume);
+            strategy.write(new BufferedOutputStream(new FileOutputStream(searchKey)), resume);
         } catch (IOException e) {
             throw new StorageException("Storage write error.", e, searchKey.getName());
         }
@@ -42,7 +45,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected Resume getResume(File searchKey) {
         try {
-            return read(new BufferedInputStream(new FileInputStream(searchKey)));
+            return strategy.read(new BufferedInputStream(new FileInputStream(searchKey)));
         } catch (IOException e) {
             throw new StorageException("File read error", e, searchKey.getName());
         }
@@ -91,15 +94,7 @@ public class FileStorage extends AbstractStorage<File> {
         return new File(dir, uuid);
     }
 
-    public void setStrategy(SerializationStrategy strategy) {
+    public void setStrategy(Serializer strategy) {
         this.strategy = strategy;
-    }
-
-    private void write(BufferedOutputStream out, Resume resume) throws IOException {
-            strategy.write(out, resume);
-    }
-
-    private Resume read(BufferedInputStream in) throws IOException {
-            return strategy.read(in);
     }
 }
