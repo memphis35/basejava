@@ -6,11 +6,16 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-public class OrganizationSection extends Section<List<Organization>> {
+public class OrganizationSection extends Section {
+
+    List<Organization> content;
+
+    public OrganizationSection() {
+    }
 
     public OrganizationSection(List<Organization> content) {
-        super(content);
         Objects.requireNonNull(content, "OrganizationSection must not be null.");
+        this.content = content;
     }
 
     public void addOrganization(Organization org) {
@@ -31,6 +36,13 @@ public class OrganizationSection extends Section<List<Organization>> {
         throw new StorageException("Can't find organization", null);
     }
 
+    public List<Organization> getContent() {
+        return content;
+    }
+
+    public void setContent(List<Organization> content) {
+        this.content = content;
+    }
 
     @Override
     public String toString() {

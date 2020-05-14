@@ -1,16 +1,10 @@
 package ru.javawebinar.basejava.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 
-public abstract class Section<T> implements Serializable {
+@XmlAccessorType(XmlAccessType.FIELD)
+public abstract class Section implements Serializable {
 
-    final T content;
-
-    Section(T content) {
-        this.content = content;
-    }
-
-    public T getContent() {
-        return content;
-    }
 }

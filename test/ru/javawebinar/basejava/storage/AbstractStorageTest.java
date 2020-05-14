@@ -4,26 +4,54 @@ import org.junit.*;
 import ru.javawebinar.basejava.exception.ExistException;
 import ru.javawebinar.basejava.exception.NotExistException;
 import ru.javawebinar.basejava.model.*;
+import ru.javawebinar.basejava.util.DateUtil;
 
 import java.io.File;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
-    public static final File STORAGE_DIR = new File("D:\\basejava\\storage");
+    public static final File STORAGE_DIR = new File(".\\storage");
     final Storage storage;
     private final static Resume R_1 = new Resume("uuid1", "Aaron Paul");
     private final static Resume R_2 = new Resume("uuid2", "Nikki Six");
-    private final static Resume R_3 = new Resume("uuid3", "Mick Mars");
+    private final static Resume R_3 = new Resume("uuid3", "Micky Mars");
     private final static Resume R_4 = new Resume("uuid4", "Aaron Paul");
 
     AbstractStorageTest(Storage test) {
         storage = test;
     }
 
+    public void fillResume(Resume resume) {
+        resume.contacts.put(ContactType.EMAIL, resume.getFullName().replaceAll("\\s", "") + "@email.com");
+        resume.contacts.put(ContactType.PHONE, "123-456-789-" + resume.getFullName().charAt(0) + resume.getFullName().charAt(6));
+        Section objective = new StringSection("Team-lead programmer");
+        R_1.personInfo.put(SectionType.OBJECTIVE, objective);
+        Section achievements = new ListSection(Arrays.asList("Achievement1", "Achievement2", "Achievement3"));
+        R_1.personInfo.put(SectionType.ACHIEVEMENTS, achievements);
+        Organization.Position pos1 = new Organization.Position(
+                "Student",
+                LocalDate.of(2000, 1, 1),
+                LocalDate.of(2001, 2, 2),
+                "Description of study place");
+        Organization org = new Organization(new Link("Harvard", "http://www.harvard.edu"), pos1);
+        Section education = new OrganizationSection(Arrays.asList(org));
+        R_1.personInfo.put(SectionType.EDUCATION, education);
+    }
+
     @Before
     public void setUp() {
+        fillResume(R_1);
+        fillResume(R_2);
+        fillResume(R_3);
+        fillResume(R_4);
         storage.clear();
         storage.save(R_1);
         storage.save(R_2);
@@ -32,6 +60,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void clear() {
+        fillResume(R_1);
         storage.clear();
         List<Resume> result = new ArrayList<>();
         assertEquals(result, storage.getAllSorted());

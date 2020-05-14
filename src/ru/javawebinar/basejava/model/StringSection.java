@@ -2,11 +2,24 @@ package ru.javawebinar.basejava.model;
 
 import java.util.Objects;
 
-public class StringSection extends Section<String> {
+public class StringSection extends Section {
+
+    private String content;
+
+    public StringSection() {
+    }
 
     public StringSection(String content) {
-        super(content);
         Objects.requireNonNull(content, "StringSection data must not be null.");
+        this.content = content;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override
