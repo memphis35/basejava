@@ -1,4 +1,6 @@
 /.idea/
-/.gitignore
+/lib/
 /basejava.iml
 /storage/
+/out/
+.gitignore
