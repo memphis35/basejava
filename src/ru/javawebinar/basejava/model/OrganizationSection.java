@@ -2,7 +2,6 @@ package ru.javawebinar.basejava.model;
 
 import ru.javawebinar.basejava.exception.StorageException;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -27,17 +26,6 @@ public class OrganizationSection extends Section {
         } else {
             throw new StorageException("Organization already exist.", null);
         }
-    }
-
-
-    public void addPosition(String orgTitle, String title, LocalDate startDate, LocalDate endDate, String description) {
-        for (Organization org : content) {
-            if (org.getHomepage().getName().equals(orgTitle)) {
-                org.getPositions().add(new Organization.Position(title, startDate, endDate, description));
-                return;
-            }
-        }
-        throw new StorageException("Can't find organization", null);
     }
 
     public List<Organization> getContent() {

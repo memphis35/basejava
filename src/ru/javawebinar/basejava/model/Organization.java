@@ -33,7 +33,7 @@ public class Organization implements Serializable {
         return positions;
     }
 
-    public void addPosition(LocalDate startDate, LocalDate endDate, String title, String description) {
+    public void addPosition(String title, String description, LocalDate startDate, LocalDate endDate) {
         positions.add(new Position(title, startDate, endDate,  description));
     }
 
