@@ -30,12 +30,12 @@ public abstract class AbstractStorageTest {
     }
 
     public void fillResume(Resume resume) {
-        resume.contacts.put(ContactType.EMAIL, resume.getFullName().replaceAll("\\s", "") + "@email.com");
-        resume.contacts.put(ContactType.PHONE, "123-456-789-" + resume.getFullName().charAt(0) + resume.getFullName().charAt(6));
+        resume.getContacts().put(ContactType.EMAIL, resume.getFullName().replaceAll("\\s", "") + "@email.com");
+        resume.getContacts().put(ContactType.PHONE, "123-456-789-" + resume.getFullName().charAt(0) + resume.getFullName().charAt(6));
         Section objective = new StringSection("Team-lead programmer");
-        R_1.personInfo.put(SectionType.OBJECTIVE, objective);
+        resume.getPersonInfo().put(SectionType.OBJECTIVE, objective);
         Section achievements = new ListSection(Arrays.asList("Achievement1", "Achievement2", "Achievement3"));
-        R_1.personInfo.put(SectionType.ACHIEVEMENTS, achievements);
+        resume.getPersonInfo().put(SectionType.ACHIEVEMENTS, achievements);
         Organization.Position pos1 = new Organization.Position(
                 "Student",
                 LocalDate.of(2000, 1, 1),
@@ -43,7 +43,7 @@ public abstract class AbstractStorageTest {
                 "Description of study place");
         Organization org = new Organization(new Link("Harvard", "http://www.harvard.edu"), pos1);
         Section education = new OrganizationSection(Arrays.asList(org));
-        R_1.personInfo.put(SectionType.EDUCATION, education);
+        resume.getPersonInfo().put(SectionType.EDUCATION, education);
     }
 
     @Before
@@ -93,7 +93,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getSuccess() {
-        assertEquals(R_3, storage.get(R_3.getUuid()));
+        assertEquals(R_1, storage.get(R_1.getUuid()));
     }
 
     @Test(expected = NotExistException.class)

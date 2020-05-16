@@ -24,6 +24,7 @@ public class DataStreamSerializer implements Serializer {
             writeCollection(dos, resume.getPersonInfo().entrySet(), entry -> {
                 SectionType type = entry.getKey();
                 Section section = entry.getValue();
+                dos.writeUTF(type.name());
                 switch (type) {
                     case OBJECTIVE:
                     case PERSONAL:
@@ -31,7 +32,8 @@ public class DataStreamSerializer implements Serializer {
                         break;
                     case ACHIEVEMENTS:
                     case QUALIFICATION:
-                        writeCollection(dos, ((ListSection) section).getContent(), dos::writeUTF);
+                        dos.writeUTF(type.name());
+                        writeCollection(dos, ((ListSection) section).getContent(), element -> dos.writeUTF(element));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
@@ -62,8 +64,9 @@ public class DataStreamSerializer implements Serializer {
             for (int i = dis.readInt(); i > 0; i--) {
                 resume.getContacts().put(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
-            while (in.available() > 0) {
+            while (dis.available() > 0) {
                 String type = dis.readUTF();
+                if (type.isEmpty()) continue;
                 switch (type) {
                     case "OBJECTIVE":
                     case "PERSONAL":
