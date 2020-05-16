@@ -32,8 +32,7 @@ public class DataStreamSerializer implements Serializer {
                         break;
                     case ACHIEVEMENTS:
                     case QUALIFICATION:
-                        dos.writeUTF(type.name());
-                        writeCollection(dos, ((ListSection) section).getContent(), element -> dos.writeUTF(element));
+                        writeCollection(dos, ((ListSection) section).getContent(), dos::writeUTF);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
@@ -64,7 +63,7 @@ public class DataStreamSerializer implements Serializer {
             for (int i = dis.readInt(); i > 0; i--) {
                 resume.getContacts().put(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
-            while (dis.available() > 0) {
+            for (int index = dis.readInt(); index > 0; index--) {
                 String type = dis.readUTF();
                 if (type.isEmpty()) continue;
                 switch (type) {
