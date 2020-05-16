@@ -21,7 +21,8 @@ public class DataStreamSerializer implements Serializer {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             });
-            writeCollection(dos, resume.getPersonInfo().entrySet(), entry -> {
+            Map<SectionType, Section> personInfo = resume.getPersonInfo();
+            writeCollection(dos, personInfo.entrySet(), entry -> {
                 SectionType type = entry.getKey();
                 Section section = entry.getValue();
                 dos.writeUTF(type.name());
@@ -32,8 +33,7 @@ public class DataStreamSerializer implements Serializer {
                         break;
                     case ACHIEVEMENTS:
                     case QUALIFICATION:
-                        dos.writeUTF(type.name());
-                        writeCollection(dos, ((ListSection) section).getContent(), element -> dos.writeUTF(element));
+                        writeCollection(dos, ((ListSection) section).getContent(), dos::writeUTF);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
@@ -64,7 +64,7 @@ public class DataStreamSerializer implements Serializer {
             for (int i = dis.readInt(); i > 0; i--) {
                 resume.getContacts().put(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
-            while (dis.available() > 0) {
+            for (int i = dis.readInt(); i > 0; i--) {
                 String type = dis.readUTF();
                 if (type.isEmpty()) continue;
                 switch (type) {
@@ -75,7 +75,7 @@ public class DataStreamSerializer implements Serializer {
                     case "ACHIEVEMENTS":
                     case "QUALIFICATION":
                         List<String> list = new ArrayList<>();
-                        for (int i = dis.readInt(); i > 0; i--) {
+                        for (int j = dis.readInt(); j > 0; j--) {
                             list.add(dis.readUTF());
                         }
                         resume.getPersonInfo().put(SectionType.valueOf(type), new ListSection(list));
@@ -83,7 +83,7 @@ public class DataStreamSerializer implements Serializer {
                     case "EXPERIENCE":
                     case "EDUCATION":
                         OrganizationSection org = new OrganizationSection();
-                        for (int i = dis.readInt(); i > 0; i--) {
+                        for (int z = dis.readInt(); z > 0; z--) {
                             Link link = new Link(dis.readUTF(), dis.readUTF());
                             org.addOrganization(new Organization(link));
                             for (int j = dis.readInt(); j > 0; j--) {
@@ -101,7 +101,11 @@ public class DataStreamSerializer implements Serializer {
                 }
             }
             return resume;
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e.getCause().toString());
         }
+        return null;
     }
 
     private String writeDate(LocalDate date) {
