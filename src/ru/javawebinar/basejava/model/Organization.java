@@ -92,10 +92,10 @@ public class Organization implements Serializable {
 
         @Override
         public String toString() {
-            return String.format("\n\tPeriod: %s - %s | Title: %s | Description: %s",
+            return String.format("\n\tPeriod: %s - %s | Title: %s %s",
                     startDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)),
                     endDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)),
-                    title, description);
+                    title, description != null ? "| Description: " + description : "");
         }
 
         @Override

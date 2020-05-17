@@ -1,7 +1,6 @@
 package ru.javawebinar.basejava.serializer;
 
 import ru.javawebinar.basejava.model.*;
-import ru.javawebinar.basejava.writers.WriterInterface;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -37,11 +36,22 @@ public class DataStreamSerializer implements Serializer {
                     case EXPERIENCE:
                     case EDUCATION:
                         writeCollection(dos, ((OrganizationSection) entry.getValue()).getContent(), org -> {
-                            dos.writeUTF(org.getHomepage().getName());
-                            dos.writeUTF(org.getHomepage().getUrl());
+                            if (org.getHomepage().getUrl() != null) {
+                                dos.writeUTF("notNullURL");
+                                dos.writeUTF(org.getHomepage().getName());
+                                dos.writeUTF(org.getHomepage().getUrl());
+                            } else {
+                                dos.writeUTF("nullURL");
+                                dos.writeUTF(org.getHomepage().getName());
+                            }
                             writeCollection(dos, org.getPositions(), position -> {
                                 dos.writeUTF(position.getTitle());
-                                dos.writeUTF(position.getDescription());
+                                if (position.getDescription() != null) {
+                                    dos.writeUTF("notNullDescription");
+                                    dos.writeUTF(position.getDescription());
+                                } else {
+                                    dos.writeUTF("nullDescription");
+                                }
                                 dos.writeUTF(writeDate(position.getStartDate()));
                                 dos.writeUTF(writeDate(position.getEndDate()));
                             });
@@ -60,12 +70,9 @@ public class DataStreamSerializer implements Serializer {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            for (int i = dis.readInt(); i > 0; i--) {
-                resume.getContacts().put(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
+            readCollection(dis, () -> resume.getContacts().put(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
             for (int index = dis.readInt(); index > 0; index--) {
                 String type = dis.readUTF();
-                if (type.isEmpty()) continue;
                 switch (type) {
                     case "OBJECTIVE":
                     case "PERSONAL":
@@ -74,25 +81,31 @@ public class DataStreamSerializer implements Serializer {
                     case "ACHIEVEMENTS":
                     case "QUALIFICATION":
                         List<String> list = new ArrayList<>();
-                        for (int i = dis.readInt(); i > 0; i--) {
-                            list.add(dis.readUTF());
-                        }
+                        readCollection(dis, () -> list.add(dis.readUTF()));
                         resume.getPersonInfo().put(SectionType.valueOf(type), new ListSection(list));
                         break;
                     case "EXPERIENCE":
                     case "EDUCATION":
                         OrganizationSection org = new OrganizationSection();
-                        for (int i = dis.readInt(); i > 0; i--) {
-                            Link link = new Link(dis.readUTF(), dis.readUTF());
+                        readCollection(dis, () -> {
+                            Link link;
+                            if (dis.readUTF().equals("notNullURL")) {
+                                link = new Link(dis.readUTF(), dis.readUTF());
+                            } else {
+                                link = new Link(dis.readUTF(), null);
+                            }
                             org.addOrganization(new Organization(link));
-                            for (int j = dis.readInt(); j > 0; j--) {
+                            readCollection(dis, () -> {
+                                String name = dis.readUTF();
+                                String description = null;
+                                if (dis.readUTF().equals("notNullDescription")) description = dis.readUTF();
                                 org.getContent().get(org.getContent().size() - 1).addPosition(
-                                        dis.readUTF(),
-                                        dis.readUTF(),
+                                        name,
+                                        description,
                                         readDate(dis.readUTF()),
                                         readDate(dis.readUTF()));
-                            }
-                        }
+                            });
+                        });
                         resume.getPersonInfo().put(SectionType.valueOf(type), org);
                         break;
                     default:
@@ -118,4 +131,19 @@ public class DataStreamSerializer implements Serializer {
         }
     }
 
+    private <T> void readCollection(DataInputStream in, ReaderInterface<T> reader) throws IOException {
+        for (int i = in.readInt(); i > 0; i--) {
+            reader.readData();
+        }
+    }
+
+    @FunctionalInterface
+    public interface WriterInterface<T> {
+        void writeData(T element) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface ReaderInterface<T> {
+        void readData() throws IOException;
+    }
 }
