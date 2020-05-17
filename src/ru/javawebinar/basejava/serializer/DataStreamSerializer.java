@@ -71,7 +71,7 @@ public class DataStreamSerializer implements Serializer {
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
             readCollection(dis, () -> resume.getContacts().put(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
-            for (int index = dis.readInt(); index > 0; index--) {
+            readCollection(dis, () -> {
                 String type = dis.readUTF();
                 switch (type) {
                     case "OBJECTIVE":
@@ -111,7 +111,7 @@ public class DataStreamSerializer implements Serializer {
                     default:
                         break;
                 }
-            }
+            });
             return resume;
         }
     }
