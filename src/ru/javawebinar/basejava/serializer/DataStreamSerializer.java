@@ -37,20 +37,18 @@ public class DataStreamSerializer implements Serializer {
                     case EDUCATION:
                         writeCollection(dos, ((OrganizationSection) entry.getValue()).getContent(), org -> {
                             if (org.getHomepage().getUrl() != null) {
-                                dos.writeUTF("notNullURL");
                                 dos.writeUTF(org.getHomepage().getName());
                                 dos.writeUTF(org.getHomepage().getUrl());
                             } else {
-                                dos.writeUTF("nullURL");
+                                dos.writeUTF("");
                                 dos.writeUTF(org.getHomepage().getName());
                             }
                             writeCollection(dos, org.getPositions(), position -> {
                                 dos.writeUTF(position.getTitle());
                                 if (position.getDescription() != null) {
-                                    dos.writeUTF("notNullDescription");
                                     dos.writeUTF(position.getDescription());
                                 } else {
-                                    dos.writeUTF("nullDescription");
+                                    dos.writeUTF("");
                                 }
                                 dos.writeUTF(writeDate(position.getStartDate()));
                                 dos.writeUTF(writeDate(position.getEndDate()));
@@ -72,24 +70,24 @@ public class DataStreamSerializer implements Serializer {
             Resume resume = new Resume(uuid, fullName);
             readCollection(dis, () -> resume.getContacts().put(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
             readCollection(dis, () -> {
-                String type = dis.readUTF();
+                SectionType type = SectionType.valueOf(dis.readUTF());
                 switch (type) {
-                    case "OBJECTIVE":
-                    case "PERSONAL":
-                        resume.getPersonInfo().put(SectionType.valueOf(type), new StringSection(dis.readUTF()));
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        resume.getPersonInfo().put(type, new StringSection(dis.readUTF()));
                         break;
-                    case "ACHIEVEMENTS":
-                    case "QUALIFICATION":
+                    case ACHIEVEMENTS:
+                    case QUALIFICATION:
                         List<String> list = new ArrayList<>();
                         readCollection(dis, () -> list.add(dis.readUTF()));
-                        resume.getPersonInfo().put(SectionType.valueOf(type), new ListSection(list));
+                        resume.getPersonInfo().put(type, new ListSection(list));
                         break;
-                    case "EXPERIENCE":
-                    case "EDUCATION":
+                    case EXPERIENCE:
+                    case EDUCATION:
                         OrganizationSection org = new OrganizationSection();
                         readCollection(dis, () -> {
                             Link link;
-                            if (dis.readUTF().equals("notNullURL")) {
+                            if (!dis.readUTF().isEmpty()) {
                                 link = new Link(dis.readUTF(), dis.readUTF());
                             } else {
                                 link = new Link(dis.readUTF(), null);
@@ -98,7 +96,7 @@ public class DataStreamSerializer implements Serializer {
                             readCollection(dis, () -> {
                                 String name = dis.readUTF();
                                 String description = null;
-                                if (dis.readUTF().equals("notNullDescription")) description = dis.readUTF();
+                                if (!dis.readUTF().isEmpty()) description = dis.readUTF();
                                 org.getContent().get(org.getContent().size() - 1).addPosition(
                                         name,
                                         description,
@@ -106,7 +104,7 @@ public class DataStreamSerializer implements Serializer {
                                         readDate(dis.readUTF()));
                             });
                         });
-                        resume.getPersonInfo().put(SectionType.valueOf(type), org);
+                        resume.getPersonInfo().put(type, org);
                         break;
                     default:
                         break;
