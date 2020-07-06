@@ -3,4 +3,5 @@
 /basejava.iml
 /storage/
 /out/
-.gitignore
+/.gitignore
+/config/
