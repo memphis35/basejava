@@ -16,10 +16,10 @@ public class SqlHelper {
         cf = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
     }
 
-    public <T> T prepare(String query, Executor exec) {
+    public <T> T prepare(String query, Executor<T> exec) {
         try (Connection connection = cf.getConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
             LOGGER.info("Connection established.");
-            return (T) exec.execute(ps);
+            return exec.execute(ps);
         } catch (SQLException e) {
             LOGGER.warning("SQL Exception:" + e.getSQLState());
             throw new StorageException(e.getSQLState(), e);
