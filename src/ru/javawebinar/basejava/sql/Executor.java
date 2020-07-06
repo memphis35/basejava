@@ -2,7 +2,7 @@ package ru.javawebinar.basejava.sql;
 
 import java.sql.PreparedStatement;
 
-public interface Executor {
+public interface Executor<TYPE> {
 
-    void execute(PreparedStatement ps);
+    TYPE execute(PreparedStatement ps);
 }

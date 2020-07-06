@@ -5,17 +5,18 @@ import ru.javawebinar.basejava.exception.ExistException;
 import ru.javawebinar.basejava.exception.NotExistException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.sql.ConnectionFactory;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Logger;
 
 public class SqlStorage implements Storage {
 
+    private static final Logger LOGGER = Logger.getLogger(SqlStorage.class.getName());
     private final SqlHelper helper = new SqlHelper(
             Config.get().getUrl(), Config.get().getUser(), Config.get().getPassword());
 
@@ -24,7 +25,10 @@ public class SqlStorage implements Storage {
         helper.prepare("DELETE FROM resume", ps -> {
             try {
                 ps.execute();
+                LOGGER.info("Storage cleared");
+                return null;
             } catch (SQLException e) {
+                LOGGER.warning("SQL Exception: " + e.getSQLState());
                 throw new StorageException(e.getSQLState(), e);
             }
         });
@@ -37,8 +41,11 @@ public class SqlStorage implements Storage {
                 ps.setString(1, resume.getUuid());
                 ps.setString(2, resume.getFullName());
                 ps.execute();
+                LOGGER.info("Resume successfully added");
+                return null;
             } catch (SQLIntegrityConstraintViolationException e) {
-                throw new ExistException("Already exist");
+                LOGGER.info("Resume " + resume.getUuid() + " already exist.");
+                throw new ExistException(resume.getUuid());
             } catch (SQLException e) {
                 throw new StorageException(e.getMessage(), e);
             }
@@ -51,7 +58,12 @@ public class SqlStorage implements Storage {
             try {
                 ps.setString(1, resume.getFullName());
                 ps.setString(2, resume.getUuid());
-                if (ps.executeUpdate() == 0) throw new NotExistException("Not exist");
+                if (ps.executeUpdate() == 0) {
+                    LOGGER.info("Resume doesn't exist");
+                    throw new NotExistException(resume.getUuid());
+                }
+                LOGGER.info("Resume successfully updated");
+                return null;
             } catch (SQLException e) {
                 throw new StorageException(e.getMessage(), e);
             }
@@ -61,18 +73,21 @@ public class SqlStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        AtomicReference<String> fullName = new AtomicReference<>();
-        helper.prepare("SELECT * FROM resume WHERE uuid = ?", ps -> {
+        return helper.prepare("SELECT * FROM resume WHERE uuid = ?", ps -> {
             try {
                 ps.setString(1, uuid);
                 ResultSet rs = ps.executeQuery();
-                if (!rs.next()) throw new NotExistException(uuid);
-                fullName.set(rs.getString("full_name"));
+                if (!rs.next()) {
+                    LOGGER.info("Resume doesn't exist");
+                    throw new NotExistException(uuid);
+                }
+                LOGGER.info("Resume successfully receive");
+                return new Resume(uuid, rs.getString("full_name"));
             } catch (SQLException e) {
+                LOGGER.warning("SQL Exception: " + e.getSQLState());
                 throw new StorageException(e.getMessage(), e);
             }
         });
-        return new Resume(uuid, fullName.get());
     }
 
     @Override
@@ -80,8 +95,13 @@ public class SqlStorage implements Storage {
         helper.prepare("DELETE FROM resume WHERE uuid = ?", ps -> {
             try {
                 ps.setString(1, uuid);
-                if (ps.executeUpdate() == 0) throw new NotExistException(uuid);
+                if (ps.executeUpdate() == 0) {
+                    LOGGER.info("Resume doesn't exist");
+                    throw new NotExistException(uuid);
+                }
+                return null;
             } catch (SQLException e) {
+                LOGGER.warning("SQL Exception: " + e.getSQLState());
                 throw new StorageException(e.getMessage(), e);
             }
         });
@@ -89,32 +109,32 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        List<Resume> resumes = new ArrayList<>();
-        helper.prepare("SELECT * FROM resume ORDER BY full_name", ps -> {
+        return helper.prepare("SELECT * FROM resume ORDER BY full_name", ps -> {
             try {
+                List<Resume> resumes = new ArrayList<>();
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     resumes.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
                 }
+                LOGGER.info("List of resumes successfully received");
+                return resumes;
             } catch (SQLException e) {
+                LOGGER.warning("SQL Exception: " + e.getSQLState());
                 throw new StorageException(e.getMessage(), e);
             }
         });
-        return resumes;
     }
 
     @Override
     public int size() {
-        AtomicInteger size = new AtomicInteger();
-        helper.prepare("SELECT COUNT(uuid) AS size FROM resume", ps -> {
+        return helper.prepare("SELECT COUNT(uuid) AS size FROM resume", ps -> {
             try {
                 ResultSet rs = ps.executeQuery();
                 rs.next();
-                size.set(rs.getInt("size"));
+                return rs.getInt("size");
             } catch (SQLException e) {
                 throw new StorageException(e.getMessage(), e);
             }
         });
-        return size.get();
     }
 }
