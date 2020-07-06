@@ -24,7 +24,7 @@ public class OrganizationSection extends Section {
         if (!content.contains(org)) {
             content.add(org);
         } else {
-            throw new StorageException("Organization already exist.", null);
+            throw new StorageException("Organization already exist.");
         }
     }
 

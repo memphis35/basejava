@@ -86,7 +86,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     private File[] checkNullValue() {
         if (dir.listFiles() != null) return dir.listFiles();
-        throw new StorageException("Object have null value.", null);
+        throw new StorageException("Object have null value.");
     }
 
     @Override

@@ -1,24 +1,23 @@
 package ru.javawebinar.basejava.storage;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
+import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.exception.ExistException;
 import ru.javawebinar.basejava.exception.NotExistException;
 import ru.javawebinar.basejava.model.*;
-import ru.javawebinar.basejava.util.DateUtil;
 
 import java.io.File;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Month;
-import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
-    public static final File STORAGE_DIR = new File(".\\storage");
+    public static final File STORAGE_DIR = Config.get().getStorageDir();
     final Storage storage;
     private final static Resume R_1 = new Resume("uuid1", "Aaron Paul");
     private final static Resume R_2 = new Resume("uuid2", "Nikki Six");
@@ -51,10 +50,10 @@ public abstract class AbstractStorageTest {
 
     @Before
     public void setUp() {
-        fillResume(R_1);
-        fillResume(R_2);
-        fillResume(R_3);
-        fillResume(R_4);
+        //fillResume(R_1);
+        //fillResume(R_2);
+        //fillResume(R_3);
+        //fillResume(R_4);
         storage.clear();
         storage.save(R_1);
         storage.save(R_2);
@@ -63,7 +62,6 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void clear() {
-        fillResume(R_1);
         storage.clear();
         List<Resume> result = new ArrayList<>();
         assertEquals(result, storage.getAllSorted());
