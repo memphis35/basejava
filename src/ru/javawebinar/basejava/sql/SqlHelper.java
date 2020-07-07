@@ -25,4 +25,22 @@ public class SqlHelper {
             throw new StorageException(e.getSQLState(), e);
         }
     }
+
+    public <T> T prepareTransaction(TransactionExecutor<T> exec) {
+        try (Connection connection = cf.getConnection()) {
+            log.info("Connection established.");
+            try {
+                connection.setAutoCommit(false);
+                T result = exec.transactionExecute(connection);
+                connection.commit();
+                return result;
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            }
+        } catch (SQLException e) {
+            log.warning("SQL Exception:" + e.getSQLState());
+            throw new StorageException(e.getSQLState(), e);
+        }
+    }
 }

@@ -30,11 +30,11 @@ public abstract class AbstractStorageTest {
     }
 
     public void fillResume(Resume resume) {
-        /*String url = Math.random() > 0.5 ? "http://www.harvard.edu" : null;
-        String description = Math.random() > 0.5 ? "Description" : null;
+        //String url = Math.random() > 0.5 ? "http://www.harvard.edu" : null;
+        //String description = Math.random() > 0.5 ? "Description" : null;
         resume.getContacts().put(ContactType.EMAIL, resume.getFullName().replaceAll("\\s", "") + "@email.com");
         resume.getContacts().put(ContactType.PHONE, "123-456-789-" + resume.getFullName().charAt(0) + resume.getFullName().charAt(6));
-        Section objective = new StringSection("Team-lead programmer");
+        /*Section objective = new StringSection("Team-lead programmer");
         resume.getPersonInfo().put(SectionType.OBJECTIVE, objective);
         Section achievements = new ListSection(Arrays.asList("Achievement1", "Achievement2", "Achievement3"));
         resume.getPersonInfo().put(SectionType.ACHIEVEMENTS, achievements);
@@ -84,6 +84,8 @@ public abstract class AbstractStorageTest {
     @Test
     public void updateSuccess() {
         Resume r5 = new Resume(R_2.getUuid(), "fullNameUpdated");
+        r5.addContact(ContactType.PHONE, "123-456-789-FNU");
+        r5.addContact(ContactType.EMAIL, "fullNameUpdated@email.com");
         storage.update(r5);
         assertEquals(r5, storage.get(R_2.getUuid()));
     }
@@ -100,7 +102,7 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = NotExistException.class)
     public void getFailed() {
-        storage.get(R_4.getUuid());
+        storage.get("DUMMY_e2-1ac7-48f2-9d7f-7e111087f111");
     }
 
     @Test(expected = NotExistException.class)

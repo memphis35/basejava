@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public enum ContactType implements Serializable {
 
-    PHONE("Phone: "),
-    SKYPE("Skype: "),
-    EMAIL("E-mail: "),
-    LINKEDIN("Profile on LinkedIn: "),
-    GITHUB("Profile on GitHub: "),
-    STACKOVERFLOW("Profile on StackOverFlow.com: "),
-    HOMEPAGE("Homepage: ");
+    PHONE("Phone"),
+    SKYPE("Skype"),
+    EMAIL("Email"),
+    LINKEDIN("LinkedIn"),
+    GITHUB("GitHub"),
+    STACKOVERFLOW("StackOverFlow"),
+    HOMEPAGE("Homepage");
 
     private String title;
 
