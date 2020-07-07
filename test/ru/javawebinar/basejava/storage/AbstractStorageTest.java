@@ -9,27 +9,28 @@ import ru.javawebinar.basejava.model.*;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
     public static final File STORAGE_DIR = Config.get().getStorageDir();
     final Storage storage;
-    private final static Resume R_1 = new Resume("uuid1", "Aaron Paul");
-    private final static Resume R_2 = new Resume("uuid2", "Nikki Six");
-    private final static Resume R_3 = new Resume("uuid3", "Micky Mars");
-    private final static Resume R_4 = new Resume("uuid4", "Aaron Paul");
+    private final static String UUID1 = UUID.randomUUID().toString();
+    private final static String UUID2 = UUID.randomUUID().toString();
+    private final static String UUID3 = UUID.randomUUID().toString();
+    private final static String UUID4 = UUID.randomUUID().toString();
+    private final static Resume R_1 = new Resume(UUID1, "Aaron Paul");
+    private final static Resume R_2 = new Resume(UUID2, "Nikki Six");
+    private final static Resume R_3 = new Resume(UUID3, "Micky Mars");
+    private final static Resume R_4 = new Resume(UUID4, "Aaron Paul");
 
     AbstractStorageTest(Storage test) {
         storage = test;
     }
 
     public void fillResume(Resume resume) {
-        String url = Math.random() > 0.5 ? "http://www.harvard.edu" : null;
+        /*String url = Math.random() > 0.5 ? "http://www.harvard.edu" : null;
         String description = Math.random() > 0.5 ? "Description" : null;
         resume.getContacts().put(ContactType.EMAIL, resume.getFullName().replaceAll("\\s", "") + "@email.com");
         resume.getContacts().put(ContactType.PHONE, "123-456-789-" + resume.getFullName().charAt(0) + resume.getFullName().charAt(6));
@@ -45,15 +46,15 @@ public abstract class AbstractStorageTest {
                 description);
         Organization org = new Organization(new Link("Harvard", url), pos1);
         Section education = new OrganizationSection(Arrays.asList(org));
-        resume.getPersonInfo().put(SectionType.EDUCATION, education);
+        resume.getPersonInfo().put(SectionType.EDUCATION, education);*/
     }
 
     @Before
     public void setUp() {
-        //fillResume(R_1);
-        //fillResume(R_2);
-        //fillResume(R_3);
-        //fillResume(R_4);
+        fillResume(R_1);
+        fillResume(R_2);
+        fillResume(R_3);
+        fillResume(R_4);
         storage.clear();
         storage.save(R_1);
         storage.save(R_2);

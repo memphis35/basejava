@@ -9,8 +9,8 @@ import java.sql.SQLException;
 import java.util.logging.Logger;
 
 public class SqlHelper {
-    private static final Logger LOGGER = Logger.getLogger(SqlHelper.class.getName());
-    ConnectionFactory cf;
+    private final Logger log = Logger.getLogger(SqlHelper.class.getName());
+    private final ConnectionFactory cf;
 
     public SqlHelper(String dbUrl, String dbUser, String dbPassword) {
         cf = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
@@ -18,10 +18,10 @@ public class SqlHelper {
 
     public <T> T prepare(String query, Executor<T> exec) {
         try (Connection connection = cf.getConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
-            LOGGER.info("Connection established.");
+            log.info("Connection established.");
             return exec.execute(ps);
         } catch (SQLException e) {
-            LOGGER.warning("SQL Exception:" + e.getSQLState());
+            log.warning("SQL Exception:" + e.getSQLState());
             throw new StorageException(e.getSQLState(), e);
         }
     }
