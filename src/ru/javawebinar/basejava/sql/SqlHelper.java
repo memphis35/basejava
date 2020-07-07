@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.logging.Logger;
 
 public class SqlHelper {
-    private final Logger log = Logger.getLogger(SqlHelper.class.getName());
+    private static final Logger log = Logger.getLogger(SqlHelper.class.getName());
     private final ConnectionFactory cf;
 
     public SqlHelper(String dbUrl, String dbUser, String dbPassword) {

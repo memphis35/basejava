@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class SqlStorage implements Storage {
 
-    private final Logger log = Logger.getLogger(SqlStorage.class.getName());
+    private static final Logger log = Logger.getLogger(SqlStorage.class.getName());
     private final SqlHelper helper = new SqlHelper(
             Config.get().getUrl(), Config.get().getUser(), Config.get().getPassword());
 
@@ -37,8 +37,12 @@ public class SqlStorage implements Storage {
                 log.info("Resume successfully added");
                 return null;
             } catch (SQLException e) {
-                log.info("Resume " + resume.getUuid() + " already exist.");
-                throw new ExistException(resume.getUuid());
+                if (e.getSQLState().equals("23505")) {
+                    log.info("Resume " + resume.getUuid() + " already exist.");
+                    throw new ExistException(resume.getUuid());
+                } else {
+                    throw e;
+                }
             }
         });
     }

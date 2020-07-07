@@ -16,10 +16,10 @@ import static org.junit.Assert.assertEquals;
 public abstract class AbstractStorageTest {
     public static final File STORAGE_DIR = Config.get().getStorageDir();
     final Storage storage;
-    private final static String UUID1 = UUID.randomUUID().toString();
-    private final static String UUID2 = UUID.randomUUID().toString();
-    private final static String UUID3 = UUID.randomUUID().toString();
-    private final static String UUID4 = UUID.randomUUID().toString();
+    private final static String UUID1 = "1fa0aee2-1ac7-48f2-9d7f-7e111087f111";
+    private final static String UUID2 = "818d5951-da43-4b3f-9a60-33982126ae96";
+    private final static String UUID3 = "6b365ab4-b4dc-4e86-8aa3-d7617133ea90";
+    private final static String UUID4 = "30bf4389-c8f7-47f8-bc85-469563db7619";
     private final static Resume R_1 = new Resume(UUID1, "Aaron Paul");
     private final static Resume R_2 = new Resume(UUID2, "Nikki Six");
     private final static Resume R_3 = new Resume(UUID3, "Micky Mars");
