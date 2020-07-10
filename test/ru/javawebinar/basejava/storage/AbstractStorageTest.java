@@ -32,8 +32,16 @@ public abstract class AbstractStorageTest {
     public void fillResume(Resume resume) {
         //String url = Math.random() > 0.5 ? "http://www.harvard.edu" : null;
         //String description = Math.random() > 0.5 ? "Description" : null;
-        resume.getContacts().put(ContactType.EMAIL, resume.getFullName().replaceAll("\\s", "") + "@email.com");
-        resume.getContacts().put(ContactType.PHONE, "123-456-789-" + resume.getFullName().charAt(0) + resume.getFullName().charAt(6));
+        resume.getContacts().put(ContactType.EMAIL,
+                resume.getFullName().replaceAll("\\s", "") +
+                (int)(Math.random() * 1000) +
+                "@email.com");
+        resume.getContacts().put(
+                ContactType.PHONE,
+                "123-456-789-" +
+                resume.getFullName().charAt(0) +
+                resume.getFullName().charAt(6) +
+                (int)(Math.random() * 1000));
         /*Section objective = new StringSection("Team-lead programmer");
         resume.getPersonInfo().put(SectionType.OBJECTIVE, objective);
         Section achievements = new ListSection(Arrays.asList("Achievement1", "Achievement2", "Achievement3"));
