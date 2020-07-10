@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.sql;
 
+import ru.javawebinar.basejava.exception.ExistException;
 import ru.javawebinar.basejava.exception.StorageException;
 
 import java.sql.Connection;
@@ -35,8 +36,12 @@ public class SqlHelper {
                 connection.commit();
                 return result;
             } catch (SQLException e) {
-                connection.rollback();
-                throw e;
+                if (e.getSQLState().equals("23505")) {
+                    log.info("Resume already exist.");
+                    throw new ExistException(e.getMessage());
+                } else {
+                    throw e;
+                }
             }
         } catch (SQLException e) {
             log.warning("SQL Exception:" + e.getSQLState());
