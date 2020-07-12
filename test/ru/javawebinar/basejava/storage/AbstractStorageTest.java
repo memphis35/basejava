@@ -32,11 +32,11 @@ public abstract class AbstractStorageTest {
     public void fillResume(Resume resume) {
         //String url = Math.random() > 0.5 ? "http://www.harvard.edu" : null;
         //String description = Math.random() > 0.5 ? "Description" : null;
-        resume.getContacts().put(ContactType.EMAIL,
+        resume.addContact(ContactType.EMAIL,
                 resume.getFullName().replaceAll("\\s", "") +
                 (int)(Math.random() * 1000) +
                 "@email.com");
-        resume.getContacts().put(
+        resume.addContact(
                 ContactType.PHONE,
                 "123-456-789-" +
                 resume.getFullName().charAt(0) +
@@ -59,7 +59,7 @@ public abstract class AbstractStorageTest {
 
     @Before
     public void setUp() {
-        fillResume(R_1);
+        //fillResume(R_1);
         fillResume(R_2);
         fillResume(R_3);
         fillResume(R_4);

@@ -84,10 +84,7 @@ public class SqlStorage implements Storage {
         return helper.prepareTransaction(connection -> {
             Resume result = new Resume();
             try (PreparedStatement ps = connection.prepareStatement(
-                    "SELECT r.full_name, c.type, c.value " +
-                            "FROM resume AS r " +
-                            "NATURAL JOIN contact AS c " +
-                            "WHERE uuid = ?")) {
+                    "SELECT r.full_name, c.type, c.value FROM resume r LEFT JOIN contact c ON r.uuid = c.uuid WHERE r.uuid = ?")) {
                 ps.setString(1, uuid);
                 ResultSet rs = ps.executeQuery();
                 if (!rs.next()) {
@@ -97,7 +94,8 @@ public class SqlStorage implements Storage {
                 result.setUuid(uuid);
                 result.setFullName(rs.getString("full_name"));
                 do {
-                    result.addContact(ContactType.valueOf(rs.getString("type").toUpperCase()), rs.getString("value"));
+                    if (rs.getString("type") != null) result.addContact(
+                            ContactType.valueOf(rs.getString("type").toUpperCase()), rs.getString("value"));
                 } while (rs.next());
             }
             log.info("Resume successfully receive");
