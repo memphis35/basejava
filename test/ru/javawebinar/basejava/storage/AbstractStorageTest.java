@@ -42,12 +42,12 @@ public abstract class AbstractStorageTest {
                 resume.getFullName().charAt(0) +
                 resume.getFullName().charAt(6) +
                 (int)(Math.random() * 1000));
-        /*Section objective = new StringSection("Team-lead programmer");
+        Section objective = new StringSection("Team-lead programmer");
         resume.getPersonInfo().put(SectionType.OBJECTIVE, objective);
         Section achievements = new ListSection(Arrays.asList("Achievement1", "Achievement2", "Achievement3"));
         resume.getPersonInfo().put(SectionType.ACHIEVEMENTS, achievements);
 
-        Organization.Position pos1 = new Organization.Position(
+        /*Organization.Position pos1 = new Organization.Position(
                 "Student",
                 LocalDate.of(2000, 1, 1),
                 LocalDate.of(2001, 2, 2),

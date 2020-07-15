@@ -1,11 +1,12 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class ListSection extends Section {
 
-    private List<String> content;
+    private List<String> content = new ArrayList<>();
 
     public ListSection() {
     }
@@ -45,9 +46,8 @@ public class ListSection extends Section {
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        result.append('\n');
         for (String str : content) {
-            result.append('\t').append(str).append('\n');
+            result.append(str).append('\n');
         }
         result.deleteCharAt(result.length()-1);
         return result.toString();

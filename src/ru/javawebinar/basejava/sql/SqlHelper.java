@@ -3,10 +3,7 @@ package ru.javawebinar.basejava.sql;
 import ru.javawebinar.basejava.exception.ExistException;
 import ru.javawebinar.basejava.exception.StorageException;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.logging.Logger;
 
 public class SqlHelper {
@@ -14,6 +11,11 @@ public class SqlHelper {
     private final ConnectionFactory cf;
 
     public SqlHelper(String dbUrl, String dbUser, String dbPassword) {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         cf = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
     }
 

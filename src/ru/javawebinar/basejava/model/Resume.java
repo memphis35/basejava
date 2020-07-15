@@ -50,6 +50,10 @@ public class Resume implements Comparable<Resume>, Serializable {
         contacts.put(type, value);
     }
 
+    public <T> void addSection(SectionType type, Section value) {
+        personInfo.put(type, value);
+    }
+
     public Map<ContactType, String> getContacts() {
         return contacts;
     }

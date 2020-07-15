@@ -11,3 +11,11 @@ CREATE table contact (
     value TEXT NOT NULL UNIQUE,
     FOREIGN KEY (uuid) REFERENCES resume (uuid) ON DELETE CASCADE
 );
+
+CREATE TABLE section (
+  section_id SERIAL PRIMARY KEY,
+  uuid CHAR(36) NOT NULL,
+  type TEXT NOT NULL,
+  value TEXT NOT NULL,
+  FOREIGN KEY (uuid) REFERENCES resume(uuid) ON DELETE CASCADE
+);
