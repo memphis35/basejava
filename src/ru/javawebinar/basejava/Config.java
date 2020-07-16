@@ -5,7 +5,7 @@ import java.util.Properties;
 
 public class Config {
 
-    private static final File PROPS = new File("config/resumes.properties");
+    private static final String PROPS = "resumes.properties";
     private static final Config INSTANCE = new Config();
     private final File storageDir;
     private final String url;
@@ -14,7 +14,7 @@ public class Config {
 
     private Config() {
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        try(InputStream is = loader.getResourceAsStream(PROPS.getPath())) {
+        try(InputStream is = loader.getResourceAsStream(PROPS)) {
             Properties props = new Properties();
             props.load(is);
             storageDir = new File(props.getProperty("storage.dir"));
