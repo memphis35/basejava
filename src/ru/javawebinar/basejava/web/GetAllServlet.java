@@ -1,7 +1,6 @@
 package ru.javawebinar.basejava.web;
 
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.ListStorage;
 import ru.javawebinar.basejava.storage.SqlStorage;
 import ru.javawebinar.basejava.storage.Storage;
 
@@ -14,7 +13,7 @@ import java.util.List;
 
 public class GetAllServlet extends HttpServlet {
 
-    Storage storage = new SqlStorage();
+    private final Storage storage = new SqlStorage();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

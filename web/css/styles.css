@@ -1,6 +1,7 @@
 body {
     background: white;
     font-family: "Courier New", monospace;
+    margin: 0 auto;
 }
 
 header {
@@ -14,34 +15,43 @@ header {
 }
 
 div.table {
-    height: fit-content;
     width: 60%;
-    border-top: 2px solid black;
-    border-bottom: 2px solid black;
-    text-align: center;
-    margin: 10px auto;
-    cursor: default;
+    border-top: 5px solid black;
+    border-bottom: 5px solid black;
+    margin: 0 auto;
 }
 
-li {
+form {
     display: inline;
-    list-style-type: none;
+}
+
+input.button {
+    background: white;
+    border: 2px solid white;
     color: gray;
     padding: 10px;
     margin: 5px auto;
 }
-li:hover {
+
+input.button:hover {
     background: darkgray;
     color: white;
+}
+
+input.button:active {
+    background: black;
 }
 
 div.text_block {
     width: 60%;
     margin: 10px auto;
     text-align: justify;
+    line-height: 1.5;
 }
+
 footer {
     color: gray;
     text-align: center;
     margin: 0 auto 10px auto;
+
 }

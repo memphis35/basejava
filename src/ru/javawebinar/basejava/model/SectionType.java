@@ -21,15 +21,4 @@ public enum SectionType implements Serializable {
         return title;
     }
 
-    public static SectionType getType(String title) {
-        switch (title) {
-            case "Личные качества": return PERSONAL;
-            case "Позиция": return OBJECTIVE;
-            case "Достижения": return ACHIEVEMENTS;
-            case "Квалификация": return QUALIFICATION;
-            case "Опыт работы": return EXPERIENCE;
-            case "Образование": return EDUCATION;
-            default: throw new IllegalArgumentException(title);
-        }
-    }
 }
