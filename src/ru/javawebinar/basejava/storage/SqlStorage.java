@@ -50,16 +50,7 @@ public class SqlStorage implements Storage {
                 ps.setString(2, resume.getUuid());
                 if (ps.executeUpdate() == 0) throw new NotExistException(resume.getUuid());
             }
-            helper.prepare("DELETE FROM contact WHERE uuid = ?", ps -> {
-                ps.setString(1, resume.getUuid());
-                ps.execute();
-                return null;
-            });
-            helper.prepare("DELETE FROM section WHERE uuid = ?", ps -> {
-                ps.setString(1, resume.getUuid());
-                ps.execute();
-                return null;
-            });
+            deleteToUpdate(connection, resume.getUuid());
             insertIntoContactsTable(connection, resume);
             insertIntoSectionTable(connection, resume);
             return null;
@@ -120,8 +111,8 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        Map<String, Resume> resumes = new LinkedHashMap<>();
-        helper.prepareTransaction(connection -> {
+        return new ArrayList<>(helper.prepareTransaction(connection -> {
+            Map<String, Resume> resumes = new LinkedHashMap<>();
             setFromQuery("SELECT * FROM resume ORDER BY full_name, uuid", connection, set -> {
                 String uuid = set.getString("uuid");
                 String fullName = set.getString("full_name");
@@ -140,9 +131,8 @@ public class SqlStorage implements Storage {
                 addSectionToResume(type, value, resumes.get(uuid));
             });
             log.info("List of resumes successfully received");
-            return null;
-        });
-        return new ArrayList<>(resumes.values());
+            return resumes;
+        }).values());
     }
 
     @Override
@@ -216,6 +206,17 @@ public class SqlStorage implements Storage {
             while (set.next()) {
                 addition.add(set);
             }
+        }
+    }
+
+    private void deleteToUpdate(Connection connection, String uuid) throws SQLException {
+        try (PreparedStatement ps = connection.prepareStatement("DELETE FROM contact WHERE uuid = ?")) {
+            ps.setString(1, uuid);
+            ps.execute();
+        }
+        try (PreparedStatement ps = connection.prepareStatement("DELETE FROM section WHERE uuid = ?")) {
+            ps.setString(1, uuid);
+            ps.execute();
         }
     }
 
