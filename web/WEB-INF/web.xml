@@ -5,12 +5,12 @@
          version="4.0">
 
     <servlet>
-        <servlet-name>getAll</servlet-name>
-        <servlet-class>ru.javawebinar.basejava.web.GetAllServlet</servlet-class>
+        <servlet-name>resume</servlet-name>
+        <servlet-class>ru.javawebinar.basejava.web.ResumeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>getAll</servlet-name>
-        <url-pattern>/getAll</url-pattern>
+        <servlet-name>resume</servlet-name>
+        <url-pattern>/resume</url-pattern>
     </servlet-mapping>
 
 </web-app>

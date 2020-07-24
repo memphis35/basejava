@@ -1,0 +1,17 @@
+table {
+    width: max-content;
+    margin: 5px auto;
+}
+
+th, td {
+    font-family: "Courier New", monospace;
+    padding: 5px;
+}
+
+th {
+    background: darkcyan;
+}
+
+td {
+    background: cadetblue;
+}

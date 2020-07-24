@@ -1,45 +1,42 @@
+* {
+    font-family: "Courier New", monospace;
+    /*border: 3px solid red;*/
+}
 body {
     background: white;
-    font-family: "Courier New", monospace;
     margin: 0 auto;
 }
 
 header {
-    width: 60%;
-    background: cadetblue;
+    background: lightblue;
     font-family: Cambria, monospace;
     font-size: xx-large;
     text-align: center;
     padding: 30px 0;
     margin: 0 auto;
-}
-
-div.table {
-    width: 60%;
-    border-top: 5px solid black;
     border-bottom: 5px solid black;
-    margin: 0 auto;
 }
 
-form {
-    display: inline;
+.table {
+    border-bottom: 5px solid black;
 }
 
-input.button {
-    background: white;
-    border: 2px solid white;
+a.btn, a.btn:visited {
+    display: inline-block;
     color: gray;
-    padding: 10px;
-    margin: 5px auto;
+    font-size: large;
+    padding: 15px;
+    text-decoration: none;
+    cursor: default;
 }
 
-input.button:hover {
-    background: darkgray;
+a.btn:hover {
+    background: lightgrey;
     color: white;
 }
 
-input.button:active {
-    background: black;
+a.btn:active {
+    background: lightblue;
 }
 
 div.text_block {
@@ -50,8 +47,19 @@ div.text_block {
 }
 
 footer {
-    color: gray;
+    border-top: 5px solid black;
+    color: black;
+    background-color: lightblue;
+    opacity: 95%;
     text-align: center;
-    margin: 0 auto 10px auto;
+    background-position-x: center;
+    background-position-y: bottom;
+    height: 100px;
+    bottom: 0;
+    left: 20%;
+}
 
+.footer_block {
+    display: block;
+    padding: 10px;
 }

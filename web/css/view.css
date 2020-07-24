@@ -1,0 +1,20 @@
+section {
+    width: 50%;
+    margin: 10px auto;
+    font-family: monospace;
+}
+
+div#contacts, div#person_info {
+    background-color: lightblue;
+    padding: 5px 20px;
+    margin: 5px 0;
+}
+
+a, a:visited {
+    text-decoration: none;
+    color: salmon;
+}
+
+a:hover, a:active {
+    color: red;
+}

@@ -4,14 +4,14 @@ import java.io.Serializable;
 
 public enum SectionType implements Serializable {
 
-    PERSONAL("Личные качества"),
-    OBJECTIVE("Позиция"),
-    ACHIEVEMENTS("Достижения"),
-    QUALIFICATION("Квалификация"),
-    EXPERIENCE("Опыт работы"),
-    EDUCATION("Образование");
+    PERSONAL("Personal"),
+    OBJECTIVE("Objective"),
+    ACHIEVEMENTS("Achievements"),
+    QUALIFICATION("Qualification"),
+    EXPERIENCE("Experience"),
+    EDUCATION("Education");
 
-    private String title;
+    private final String title;
 
     SectionType(String title) {
         this.title = title;
