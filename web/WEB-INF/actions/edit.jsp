@@ -134,7 +134,7 @@
                                     </div>
                                 </div>
                             </c:forEach>
-                            <div id="new-org-block-${section}"></div>
+                            <div id="new-org-block-${section}" id-value="0"></div>
                             <div class="buttons">
                                 <input id="${section}" class="inner-button" type="button" value="Add organization" onclick="addOrganization(this.id)"/>
                                 <input id="${section}" class="inner-button" type="button" value="Reset organizations>" onclick="resetOrganizations(this.id)"/>
