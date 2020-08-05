@@ -47,7 +47,7 @@ public class ListSection extends Section {
     public String toString() {
         StringBuilder result = new StringBuilder();
         for (String str : content) {
-            result.append(str).append('\n');
+            result.append('\n').append(str);
         }
         result.deleteCharAt(result.length()-1);
         return result.toString();

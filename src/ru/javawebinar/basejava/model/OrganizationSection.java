@@ -28,6 +28,11 @@ public class OrganizationSection extends Section {
         }
     }
 
+    public void addPosition(Organization org, Organization.Position position) {
+        if (!content.contains(org)) content.add(org);
+        content.get(content.indexOf(org)).addPosition(position);
+    }
+
     public List<Organization> getContent() {
         return content;
     }

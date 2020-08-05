@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +29,6 @@ public class ResumeServlet extends HttpServlet {
         switch (action) {
             case "update": {
                 storage.update(resume);
-                response.sendRedirect("resume");
                 break;
             }
             case "save": {
@@ -35,6 +36,7 @@ public class ResumeServlet extends HttpServlet {
                 break;
             }
         }
+        response.sendRedirect("resume");
     }
 
     @Override
@@ -77,16 +79,15 @@ public class ResumeServlet extends HttpServlet {
             if (!value.trim().isEmpty()) resume.addContact(type, value);
         }
         for (SectionType type : SectionType.values()) {
+            String[] values = parameters.get(type.name());
             switch (type) {
                 case OBJECTIVE:
                 case PERSONAL: {
-                    String value = parameters.get(type.name())[0];
-                    if (!value.trim().isEmpty()) resume.getPersonInfo().put(type, new StringSection(value));
+                    if (!values[0].trim().isEmpty()) resume.getPersonInfo().put(type, new StringSection(values[0]));
                     break;
                 }
                 case ACHIEVEMENTS:
                 case QUALIFICATION: {
-                    String[] values = parameters.get(type.name());
                     List<String> content = new ArrayList<>();
                     for (String element : values) {
                         if (!(element.trim().length() == 0)) content.add(element);
@@ -96,7 +97,24 @@ public class ResumeServlet extends HttpServlet {
                 }
                 case EDUCATION:
                 case EXPERIENCE: {
-                    break;
+                    if (values == null) break;
+                    List<Organization> orgs = new ArrayList<>();
+                    for (int i = 0, org_id = 0; i < values.length; i += 2) {
+                        if (values[i].trim().isEmpty()) continue;
+                        orgs.add(new Organization(new Link(values[i], values[i+1].trim().isEmpty() ? null : values[i+1])));
+                        String[] positions = parameters.get(orgs.get(org_id).getHomepage().getName());
+                        if (positions == null) continue;
+                        for (int j = 0; j < positions.length; j = j + 4) {
+                            String title = positions[j];
+                            LocalDate start_date = LocalDate.parse(positions[j+1], DateTimeFormatter.ISO_LOCAL_DATE);
+                            LocalDate end_date = LocalDate.parse(positions[j+2], DateTimeFormatter.ISO_LOCAL_DATE);
+                            String description = positions[j+3];
+                            orgs.get(org_id).addPosition(title, description.trim().isEmpty() ? null : description, start_date, end_date);
+                        }
+                        org_id++;
+                    }
+                    if (orgs.size() > 0) resume.getPersonInfo().put(type, new OrganizationSection(orgs));
+                break;
                 }
                 default:
                     throw new IllegalArgumentException(type.toString());

@@ -1,7 +1,7 @@
 fieldset {
-    width: 30%;
+    width: 500px; /*1920 * 0.3 = 576*/
     padding: 20px 20px;
-    margin: 10px auto 0 auto;
+    margin: 10px auto 0;
     background: lightblue;
     border: 2px solid black;
     border-radius: 5px;
@@ -15,12 +15,16 @@ legend {
     padding: 10px;
 }
 
-.main input, .contacts input {
+input {
     width: 250px;
     padding: 5px;
 }
 
-.main input:focus, .contacts input:focus, textarea:focus {
+input.contact {
+    margin: 0 25px 0;
+}
+
+input:focus, textarea:focus {
     background-color: #c7ffc5;
     border: 2px solid black;
     box-sizing: border-box;
@@ -30,27 +34,55 @@ td.title {
     width: 110px;
 }
 
-.info {
-    display: block;
-    margin: 20px auto 0 auto;
-}
-
 div.buttons {
     text-align: center;
 }
 
-.info_button {
+.inner-button {
     display: inline-block;
     height: 40px;
-    width: 100px;
+    width: fit-content;
     padding: 10px auto 10px auto;
     margin: 10px;
 }
 
 textarea {
+    display: block;
     width: 90%;
-    margin: 15px 0 0 0;
+    margin: 5px auto;
     resize: none;
+}
+
+div.org-block {
+    border: 2px dotted gray;
+    margin: 5px auto;
+    padding: 10px;
+}
+
+div.org-name-url {
+    text-align: center;
+}
+
+.org-row {
+    width: 45%;
+    display: inline-block;
+}
+
+.position-info {
+    border: 2px dotted gray;
+    width: 90%;
+    padding: 5px;
+    margin: 5px auto;
+}
+
+.position-row {
+    width: 25%;
+    display: table-cell;
+}
+
+.org-row input, div.position-row input {
+    width: 135px;
+    padding: 5px;
 }
 
 .end {

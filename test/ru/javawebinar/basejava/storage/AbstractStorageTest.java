@@ -14,7 +14,7 @@ import java.util.*;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
-    public static final File STORAGE_DIR = Config.get().getStorageDir();
+    public static final File STORAGE_DIR = new File("D:/projects/basejava/storage");
     final Storage storage;
     private final static String UUID1 = "1fa0aee2-1ac7-48f2-9d7f-7e111087f111";
     private final static String UUID2 = "818d5951-da43-4b3f-9a60-33982126ae96";
@@ -30,8 +30,9 @@ public abstract class AbstractStorageTest {
     }
 
     public void fillResume(Resume resume) {
-        //String url = Math.random() > 0.5 ? "http://www.harvard.edu" : null;
-        //String description = Math.random() > 0.5 ? "Description" : null;
+        String url1 = "http://www.harvard.edu";
+        String url2 = "http://www.cambridge.com";
+        String description = Math.random() > 0.5 ? "Description" : null;
         resume.addContact(ContactType.EMAIL,
                 resume.getFullName().replaceAll("\\s", "") +
                 (int)(Math.random() * 1000) +
@@ -43,23 +44,31 @@ public abstract class AbstractStorageTest {
                 resume.getFullName().charAt(6) +
                 (int)(Math.random() * 1000));
         Section objective = new StringSection("Team-lead programmer");
+        Section personal = new StringSection("Personal info");
         resume.getPersonInfo().put(SectionType.OBJECTIVE, objective);
+        resume.getPersonInfo().put(SectionType.PERSONAL, personal);
         Section achievements = new ListSection(Arrays.asList("Achievement1", "Achievement2", "Achievement3"));
         resume.getPersonInfo().put(SectionType.ACHIEVEMENTS, achievements);
 
-        /*Organization.Position pos1 = new Organization.Position(
-                "Student",
-                LocalDate.of(2000, 1, 1),
-                LocalDate.of(2001, 2, 2),
-                description);
-        Organization org = new Organization(new Link("Harvard", url), pos1);
-        Section education = new OrganizationSection(Arrays.asList(org));
-        resume.getPersonInfo().put(SectionType.EDUCATION, education);*/
+        Organization.Position pos1 = new Organization.Position(
+                "Student", LocalDate.of(2000, 1, 1), LocalDate.of(2001, 2, 2), description);
+        Organization.Position pos2 = new Organization.Position(
+                "Assistant", LocalDate.of(2001, 2, 2), LocalDate.of(2003, 5, 4), description);
+        Organization.Position pos3 = new Organization.Position(
+                "Java Junior Developer", LocalDate.of(2010, 6, 1), LocalDate.of(2012, 8, 1), description);
+        Organization org1 = new Organization(new Link("Harvard", url1), pos1, pos2);
+        Organization org2 = new Organization(new Link("Cambridge", url2));
+        Organization org3 = new Organization(new Link("Google", "google.com"), pos3);
+        org2.addPosition("Laboratory assistant", null, LocalDate.of(2005, 2, 1), LocalDate.of(2008, 9, 1));
+        Section education = new OrganizationSection(Arrays.asList(org1, org2));
+        Section experience = new OrganizationSection(Collections.singletonList(org3));
+        resume.getPersonInfo().put(SectionType.EDUCATION, education);
+        resume.getPersonInfo().put(SectionType.EXPERIENCE, experience);
     }
 
     @Before
     public void setUp() {
-        //fillResume(R_1);
+        fillResume(R_1);
         fillResume(R_2);
         fillResume(R_3);
         fillResume(R_4);

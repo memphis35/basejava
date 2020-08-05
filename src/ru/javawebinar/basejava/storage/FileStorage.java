@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class FileStorage extends AbstractStorage<File> {
 
-    private File dir;
+    private final File dir;
     private Serializer strategy;
 
     FileStorage(File dir, Serializer serializer) throws IOException {

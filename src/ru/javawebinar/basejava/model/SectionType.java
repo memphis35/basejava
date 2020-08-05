@@ -8,8 +8,8 @@ public enum SectionType implements Serializable {
     OBJECTIVE("Objective"),
     ACHIEVEMENTS("Achievements"),
     QUALIFICATION("Qualification"),
-    EXPERIENCE("Experience"),
-    EDUCATION("Education");
+    EDUCATION("Education"),
+    EXPERIENCE("Experience");
 
     private final String title;
 

@@ -15,7 +15,7 @@ import java.util.*;
 public class Organization implements Serializable {
 
     private Link homepage;
-    private List<Position> positions = new ArrayList<>();
+    private final List<Position> positions = new ArrayList<>();
 
     public Organization() {
     }
@@ -33,8 +33,20 @@ public class Organization implements Serializable {
         return positions;
     }
 
+    public void addPosition(Position position) {
+        positions.add(position);
+    }
+
     public void addPosition(String title, String description, LocalDate startDate, LocalDate endDate) {
-        positions.add(new Position(title, startDate, endDate,  description));
+        positions.add(new Position(title, startDate, endDate, description));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Organization that = (Organization) o;
+        return homepage.equals(that.homepage);
     }
 
     @Override
@@ -45,12 +57,13 @@ public class Organization implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(homepage);
+        sb.append('\n').append(homepage);
         for (Position p : positions) {
             sb.append(p.toString());
         }
         return sb.toString();
     }
+
 
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Position implements Serializable {

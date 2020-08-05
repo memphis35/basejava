@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="ru.javawebinar.basejava.model.SectionType" %>
+<%@ page import="ru.javawebinar.basejava.model.Organization" %>
 
 <html>
 <head>
@@ -31,6 +32,21 @@
                                 <li>${element}</li>
                             </c:forEach>
                         </ul>
+                </c:when>
+                <c:when test="${info_element.key.equals(SectionType.EDUCATION) or info_element.key.equals(SectionType.EXPERIENCE)}">
+                    <c:forEach items="${info_element.value.content}" var="org">
+                        <p>
+                            <a href="${org.getHomepage().getUrl()}">${org.getHomepage().getName()}</a><br>
+                            <ul style="list-style-type: none"></ul>
+                            <c:forEach items="${org.getPositions()}" var="position">
+                                <li>
+                                    ${position.getStartDate().toString()} - ${position.getEndDate().toString()}<br>
+                                        <strong>${position.getTitle()}.</strong><br>
+                                    ${position.getDescription()}
+                                </li>
+                            </c:forEach>
+                        </p>
+                    </c:forEach>
                 </c:when>
                 <c:otherwise>
                     <p>EXPECTED BLOCK</p>

@@ -14,4 +14,3 @@
     <a href="/resume" style="display: block; padding: 10px;">GO BACK</a>
     <span style="display: block; padding: 10px;">Aleksandr Smirnov, 2020</span>
 </footer>
-}
